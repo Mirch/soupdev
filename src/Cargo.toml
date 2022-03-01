@@ -1,16 +1,16 @@
 [package]
-name = "profiles"
+name = "suppdev"
 version = "0.1.0"
 edition = "2021"
 
 [lib]
 name = "lambda_layer"
-path = "src/lib/mod.rs"
+path = "lambda_layer/mod.rs"
 
 [[bin]]
 doc = false
 name = "get_profile"
-path = "src/bin/get_profile/main.rs"
+path = "profiles/get_profile/main.rs"
 
 [dependencies]
 aws-config = "0.8.0"

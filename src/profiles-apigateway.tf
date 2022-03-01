@@ -28,7 +28,7 @@ resource "aws_apigatewayv2_deployment" "profiles_api_deployment" {
   }
 }
 
-# GET USER
+# GET PROFILE
 resource "aws_apigatewayv2_integration" "get_profile_integration" {
   api_id           = aws_apigatewayv2_api.profiles_api.id
   integration_type = "AWS_PROXY"
@@ -42,7 +42,7 @@ resource "aws_apigatewayv2_integration" "get_profile_integration" {
 }
 
 resource "aws_apigatewayv2_route" "get_profile_route" {
-  api_id    = aws_apigatewayv2_api.users_api.id
+  api_id    = aws_apigatewayv2_api.profiles_api.id
   route_key = "GET /profile"
   target    = "integrations/${aws_apigatewayv2_integration.get_profile_integration.id}"
 }
@@ -51,5 +51,5 @@ resource "aws_lambda_permission" "get_profile_api_permission" {
   function_name = aws_lambda_function.get_profile_lambda.function_name
   action        = "lambda:InvokeFunction"
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_apigatewayv2_api.profile_api.execution_arn}/*/*/${split("/", aws_apigatewayv2_route.get_profile_route.route_key)[1]}"
+  source_arn    = "${aws_apigatewayv2_api.profiles_api.execution_arn}/*/*/${split("/", aws_apigatewayv2_route.get_profile_route.route_key)[1]}"
 }

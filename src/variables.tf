@@ -9,5 +9,5 @@ variable "get_profile_bin_path" {
   description = "The binary path for the GetProfile lambda."
 
   type    = string
-  default = "./bin/lambdas/get_profile/bootstrap"
+  default = "./bin/get_profile/bootstrap"
 }

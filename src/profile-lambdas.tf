@@ -38,13 +38,13 @@ data "aws_iam_policy_document" "get_profile" {
       "dynamodb:GetItem",
     ]
     resources = [
-      aws_dynamodb_table.Users.arn,
+      aws_dynamodb_table.users.arn,
     ]
   }
 }
 
 resource "aws_iam_policy" "get_profile" {
-  name = format("%s-GetProfilePolicy", var.template_name_global_generic)
+  name = "GetProfilePolicy"
   description = "IAM Policy to allow Lambda function access to DynamoDB"
   policy = data.aws_iam_policy_document.get_profile.json
 }
