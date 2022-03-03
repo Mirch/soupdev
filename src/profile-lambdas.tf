@@ -9,6 +9,12 @@ resource "aws_lambda_function" "get_profile_lambda" {
   runtime = "provided"
 
   role = aws_iam_role.get_profile.arn
+
+  environment {
+    variables = {
+      USERS_TABLE_NAME = aws_dynamodb_table.users.name
+    }
+  }
 }
 
 data "archive_file" "get_profile_archive" {
@@ -49,7 +55,12 @@ resource "aws_iam_policy" "get_profile" {
   policy = data.aws_iam_policy_document.get_profile.json
 }
 
-resource "aws_iam_role_policy_attachment" "GetProfilePolicyAttachment" {
+resource "aws_iam_role_policy_attachment" "get_profile_policy_attachment" {
   role       = aws_iam_role.get_profile.name
   policy_arn = aws_iam_policy.get_profile.arn
+}
+
+resource "aws_iam_role_policy_attachment" "get_profile_execution_policy_attachment" {
+  role       = aws_iam_role.get_profile.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
