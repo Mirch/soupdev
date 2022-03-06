@@ -3,6 +3,12 @@ resource "aws_apigatewayv2_api" "profiles_api" {
   name          = "Profiles API"
   description   = "Profiles API"
   protocol_type = "HTTP"
+
+  cors_configuration {
+    allow_origins = ["*"]
+    allow_methods = ["*"]
+    allow_headers = ["*"]
+  }
 }
 
 resource "aws_apigatewayv2_stage" "profiles_api_stage" {

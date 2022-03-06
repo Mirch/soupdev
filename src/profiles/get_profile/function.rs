@@ -30,7 +30,7 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
 
     let shared_config = aws_config::from_env().load().await;
     let client = Client::new(&shared_config);
-    let result = match client
+    let query = client
         .query()
         .table_name(users_table_name)
         .key_condition_expression("#key = :value".to_string())
@@ -40,8 +40,9 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
             AttributeValue::S(key_value.to_string()),
         )
         .select(Select::AllAttributes)
-        .send()
-        .await
+        .send();
+
+    let result = match query.await
     {
         Ok(resp) => {
             if resp.count == 0 {
@@ -59,10 +60,13 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
 
             User { uid, username }
         }
-        Err(e) => User {
-            uid: "".to_string(),
-            username: "".to_string(),
-        },
+        Err(e) => {
+            println!("Error: {}", e.to_string());
+            User {
+                uid: "".to_string(),
+                username: "".to_string(),
+            }
+        }
     };
 
     let response = json!(result).to_string();

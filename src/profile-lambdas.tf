@@ -20,15 +20,15 @@ resource "aws_lambda_function" "get_profile_lambda" {
 data "archive_file" "get_profile_archive" {
   type = "zip"
 
-  source_file = "${var.get_profile_bin_path}"   
+  source_file = var.get_profile_bin_path
   output_path = "get_profile.zip"
 }
 
 resource "aws_iam_role" "get_profile" {
-  assume_role_policy = data.aws_iam_policy_document.get_profile_role.json
+  assume_role_policy = data.aws_iam_policy_document.get_profile_assume_policy.json
 }
 
-data "aws_iam_policy_document" "get_profile_role" {
+data "aws_iam_policy_document" "get_profile_assume_policy" {
   statement {
     actions = ["sts:AssumeRole"]
     principals {
@@ -38,29 +38,35 @@ data "aws_iam_policy_document" "get_profile_role" {
   }
 }
 
-data "aws_iam_policy_document" "get_profile" {
+data "aws_iam_policy_document" "get_profile_policy_document" {
   statement {
     actions = [
-      "dynamodb:GetItem",
+      "dynamodb:Query",
     ]
     resources = [
       aws_dynamodb_table.users.arn,
     ]
   }
+  statement {
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+      "logs:PutMetricFilter",
+      "logs:PutRetentionPolicy"
+    ]
+    resources = [
+      "arn:aws:logs:*:*:log-group:/aws/lambda/*"
+    ]
+  }
 }
 
-resource "aws_iam_policy" "get_profile" {
-  name = "GetProfilePolicy"
-  description = "IAM Policy to allow Lambda function access to DynamoDB"
-  policy = data.aws_iam_policy_document.get_profile.json
+resource "aws_iam_policy" "get_profile_policy" {
+    name   = "get_profile_policy"
+    policy = data.aws_iam_policy_document.get_profile_policy_document.json
 }
 
 resource "aws_iam_role_policy_attachment" "get_profile_policy_attachment" {
   role       = aws_iam_role.get_profile.name
-  policy_arn = aws_iam_policy.get_profile.arn
-}
-
-resource "aws_iam_role_policy_attachment" "get_profile_execution_policy_attachment" {
-  role       = aws_iam_role.get_profile.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  policy_arn = aws_iam_policy.get_profile_policy.arn
 }
