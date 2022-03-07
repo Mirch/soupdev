@@ -7,6 +7,7 @@ use serde_json::json;
 
 pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
     let users_table_name = get_env_variable("USERS_TABLE_NAME");
+    let username_index = get_env_variable("USERS_USERNAME_INDEX");
 
     let uid = match event.query_string_parameters().first("uid") {
         Some(value) => String::from(value),
@@ -33,6 +34,7 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
     let query = client
         .query()
         .table_name(users_table_name)
+        .index_name(username_index)
         .key_condition_expression("#key = :value".to_string())
         .expression_attribute_names("#key".to_string(), query_key)
         .expression_attribute_values(
