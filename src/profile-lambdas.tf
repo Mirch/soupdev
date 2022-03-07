@@ -13,7 +13,7 @@ resource "aws_lambda_function" "get_profile_lambda" {
   environment {
     variables = {
       USERS_TABLE_NAME = aws_dynamodb_table.users.name
-      USERS_USERNAME_INDEX = "${lookup(aws_dynamodb_table.api_users.global_secondary_index[0], "name")}"
+      USERS_USERNAME_INDEX = "UsersUsernameIndex"
     }
   }
 }
@@ -46,6 +46,7 @@ data "aws_iam_policy_document" "get_profile_policy_document" {
     ]
     resources = [
       aws_dynamodb_table.users.arn,
+      "${aws_dynamodb_table.users.arn}/*",
     ]
   }
   statement {

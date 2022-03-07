@@ -9,7 +9,7 @@ export function Profile() {
     const [token, setToken] = useState(null);
     useEffect(() => {
         async function getToken() {
-            const token = await getProfileAsync(params.uid);
+            const token = await getProfileAsync(params.username);
             setToken(token);
         }
         getToken();

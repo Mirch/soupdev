@@ -13,7 +13,7 @@ ReactDOM.render(
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/profile" element={<Profile />}>
-          <Route path=":uid" element={<Profile />} />
+          <Route exact strict sensitive path=":username" element={<Profile />} />
         </Route>
       </Routes>
     </BrowserRouter>
