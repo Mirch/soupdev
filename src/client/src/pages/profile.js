@@ -1,7 +1,8 @@
+import './profile.css';
 import { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import { getProfileAsync } from '../utils/api';
-import './profile.css';
+import Button from 'react-bootstrap/Button';
 
 export function Profile() {
     let params = useParams();
@@ -13,11 +14,20 @@ export function Profile() {
         }
         getToken();
     }, [])
+    if (!token) {
+        return <div></div>;
+    }
     return (
-        <div class="page-container">
-            <div class="profile-container">
-                <h1>{token ? token.username : "user"}</h1>
-                <h2> says hi!</h2>
+        <div className="page-container">
+            <div className="profile-container">
+                <h1>{token.username}</h1>
+                <h2>is {token.headline}!</h2>
+                <hr/>
+                <br/>
+                <p className="profile-description">{token.description}</p>
+                <div className="donations-container">
+                    <Button variant="warning">Donate</Button>    
+                </div>
             </div>
         </div>
     )

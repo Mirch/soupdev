@@ -57,15 +57,20 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
                 S(v) => v.clone(),
                 _ => "".to_string(),
             };
+            let headline = match &item["headline"] {
+                S(v) => v.clone(),
+                _ => "".to_string(),
+            };
+            let description = match &item["description"] {
+                S(v) => v.clone(),
+                _ => "".to_string(),
+            };
 
-            User { uid, username }
+            User { uid, username, headline, description }
         }
         Err(e) => {
             println!("Error: {}", e.to_string());
-            User {
-                uid: "".to_string(),
-                username: "".to_string(),
-            }
+            User::empty()
         }
     };
 
