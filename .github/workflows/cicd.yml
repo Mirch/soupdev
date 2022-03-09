@@ -11,12 +11,16 @@ env:
   WORKING_DIRECTORY: ./src
 
 jobs:
-  build:
+  check-and-deploy:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - uses: extractions/setup-just@v1
         
+    - name: Terraform Init
+      id: init
+      run: terraform init
+
     - name: Lint
       id: lint
       if: github.event_name == 'pull_request'
@@ -36,10 +40,6 @@ jobs:
       id: build-backend
       run: |
         just build-backend profiles
-        
-    - name: Terraform Init
-      id: init
-      run: terraform init
       
     - name: Terraform Plan
       id: plan
