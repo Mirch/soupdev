@@ -5,10 +5,7 @@ lint:
     terraform validate
     
     cd ./client
-    npm install eslint
-    npm init @eslint/config
-    npm install
-    ./node_modules/.bin/eslint . --ext .js,.jsx,.ts,.tsx
+    eslint . --ext .js,.jsx,.ts,.tsx
 
 deploy-all:
     @just deploy-backend profiles
