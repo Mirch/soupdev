@@ -7,6 +7,7 @@ lint:
     cd ./client
     npm install eslint
     npm init @eslint/config
+    npm install
     ./node_modules/.bin/eslint . --ext .js,.jsx,.ts,.tsx
 
 deploy-all:
