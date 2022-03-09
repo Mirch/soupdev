@@ -25,17 +25,8 @@ jobs:
       id: lint
       if: github.event_name == 'pull_request'
       working-directory: ${{ env.WORKING_DIRECTORY }}
-      run: |
-        rustup component add clippy
-        cargo clippy
-        terraform fmt -check
-        terraform validate
-        
-        cd ./client
-        npm install eslint
-        npm init @eslint/config
-        ./node_modules/.bin/eslint . --ext .js,.jsx,.ts,.tsx
-        
+      run: just lint
+
     - name: Build backend
       id: build-backend
       run: |
