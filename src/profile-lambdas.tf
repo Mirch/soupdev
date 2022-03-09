@@ -12,7 +12,7 @@ resource "aws_lambda_function" "get_profile_lambda" {
 
   environment {
     variables = {
-      USERS_TABLE_NAME = aws_dynamodb_table.users.name
+      USERS_TABLE_NAME     = aws_dynamodb_table.users.name
       USERS_USERNAME_INDEX = "UsersUsernameIndex"
     }
   }
@@ -64,8 +64,8 @@ data "aws_iam_policy_document" "get_profile_policy_document" {
 }
 
 resource "aws_iam_policy" "get_profile_policy" {
-    name   = "get_profile_policy"
-    policy = data.aws_iam_policy_document.get_profile_policy_document.json
+  name   = "get_profile_policy"
+  policy = data.aws_iam_policy_document.get_profile_policy_document.json
 }
 
 resource "aws_iam_role_policy_attachment" "get_profile_policy_attachment" {
