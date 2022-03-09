@@ -13,6 +13,9 @@ env:
 jobs:
   check-and-deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.WORKING_DIRECTORY }}
     steps:
     - uses: actions/checkout@v2
     - uses: extractions/setup-just@v1
@@ -30,7 +33,6 @@ jobs:
     - name: Lint
       id: lint
       if: github.event_name == 'pull_request'
-      working-directory: ${{ env.WORKING_DIRECTORY }}
       run: just lint
 
     - name: Build backend
