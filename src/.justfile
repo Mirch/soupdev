@@ -5,7 +5,7 @@ lint:
     terraform validate
     
     cd ./client
-    eslint . --ext .js,.jsx,.ts,.tsx
+    npx eslint . --ext .js,.jsx,.ts,.tsx
 
 deploy-all:
     @just deploy-backend profiles
