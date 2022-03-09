@@ -5,6 +5,7 @@ lint:
     terraform validate
     
     cd ./client
+    npm i eslint@latest
     npx eslint . --ext .js,.jsx,.ts,.tsx
 
 deploy-all:
