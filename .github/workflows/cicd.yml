@@ -24,9 +24,13 @@ jobs:
       run: |
         rustup component add clippy
         cargo clippy
-        eslint . --ext .js,.jsx,.ts,.tsx
         terraform fmt -check
         terraform validate
+        
+        cd ./client
+        npm install eslint
+        npm init @eslint/config
+        ./node_modules/.bin/eslint . --ext .js,.jsx,.ts,.tsx
         
     - name: Build backend
       id: build-backend
