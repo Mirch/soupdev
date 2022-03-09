@@ -5,7 +5,7 @@ lint:
     terraform validate
     
     cd ./client
-    npm i eslint@latest
+    npm install --save-dev eslint-config-react-app eslint@^8.0.0
     npx eslint . --ext .js,.jsx,.ts,.tsx
 
 deploy-all:
