@@ -12,6 +12,7 @@ deploy-all:
     @just deploy-backend profiles
 
 build-backend MODULE:
+    rustup target add x86_64-unknown-linux-musl
     python3 ./scripts/build-lambdas.py {{MODULE}}
 
 deploy-backend MODULE: 
