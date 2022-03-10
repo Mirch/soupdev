@@ -1,6 +1,5 @@
 resource "aws_s3_bucket" "suppdev-client" {
   bucket = "suppdev-client"
-  acl = "public-read"
 }
 
 resource "aws_s3_bucket_website_configuration" "suppdev-client-web-config" {
