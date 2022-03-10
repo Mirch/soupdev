@@ -39,14 +39,11 @@ jobs:
       id: build-backend
       run: |
         just build-backend profiles
-        ls
       
     - name: Terraform Plan
       id: plan
       if: github.event_name == 'pull_request'
-      run: |
-        terraform plan -no-color
-        ls
+      run: terraform plan -no-color
       continue-on-error: true
       
     - uses: actions/github-script@0.9.0
