@@ -24,3 +24,8 @@ terraform {
     }
   }
 }
+
+provider "aws" {
+  profile = "suppdev"
+  region  = "eu-west-1"
+}
