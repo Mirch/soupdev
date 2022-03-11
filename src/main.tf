@@ -2,11 +2,15 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 3.48.0"
+      version = "4.4.0"
     }
     archive = {
       source  = "hashicorp/archive"
       version = "~> 2.2.0"
+    }
+    null = {
+      source  = "hashicorp/null"
+      version = "3.1.0"
     }
   }
 
@@ -22,8 +26,5 @@ terraform {
 }
 
 provider "aws" {
-  region     = var.aws_region
-  profile    = "personal"
-  access_key = "AKIAVG7RRE6AMDWSPNED"
-  secret_key = "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"
+  region = "eu-west-1"
 }
