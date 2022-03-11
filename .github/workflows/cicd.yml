@@ -42,7 +42,6 @@ jobs:
 
     - name: Build backend
       id: build-backend
-      if: github.event_name == 'pull_request'
       run: |
         just build-backend profiles
       
