@@ -60,5 +60,6 @@ jobs:
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: |
         sudo apt-get install jq
-        CLIENT_BUCKET=$(echo ${{ steps.apply.outputs }} | jq -r '.client_bucket')
+        # CLIENT_BUCKET=$(echo ${{ steps.apply.outputs }} | jq -r '.client_bucket')
+        CLIENT_BUCKET=suppdev-client
         just deploy-client $CLIENT_BUCKET
