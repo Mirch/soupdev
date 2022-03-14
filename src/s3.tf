@@ -35,9 +35,3 @@ resource "aws_s3_bucket_policy" "suppdev-client" {
     ]
   })
 }
-
-resource "null_resource" "upload-website" {
-  provisioner "local-exec" {
-    command = format("cd ./client && apt-get install nodejs && npm install && npm build && aws s3 sync ./client/build s3://%s", aws_s3_bucket.suppdev-client.bucket)
-  }
-}
