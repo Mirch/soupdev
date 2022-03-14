@@ -19,5 +19,6 @@ deploy-backend MODULE:
     terraform apply -auto-approve
 
 deploy-client BUCKET_NAME:
+    cd ./client && sudo npm install
     cd ./client && sudo npm run build
     cd ./client && aws s3 sync ./build/ s3://{{BUCKET_NAME}}
