@@ -21,5 +21,5 @@ deploy-backend MODULE:
 
 deploy-client BUCKET_NAME:
     cd ./client
-    sudo npm build
+    sudo npm run build
     aws s3 sync ./build/ s3://{{BUCKET_NAME}}
