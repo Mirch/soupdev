@@ -4,9 +4,8 @@ lint:
     terraform fmt -check
     terraform validate
     
-    cd ./client
-    npm install --save-dev eslint-config-react-app eslint@^8.0.0
-    npx eslint . --ext .js,.jsx,.ts,.tsx
+    cd ./client && npm install --save-dev eslint-config-react-app eslint@^8.0.0
+    cd ./client && npx eslint . --ext .js,.jsx,.ts,.tsx
 
 deploy-all:
     @just deploy-backend profiles
@@ -20,6 +19,5 @@ deploy-backend MODULE:
     terraform apply -auto-approve
 
 deploy-client BUCKET_NAME:
-    cd ./client
-    sudo npm run build
-    aws s3 sync ./build/ s3://{{BUCKET_NAME}}
+    cd ./client && sudo npm run build
+    cd ./client && aws s3 sync ./build/ s3://{{BUCKET_NAME}}
