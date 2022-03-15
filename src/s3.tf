@@ -8,6 +8,10 @@ resource "aws_s3_bucket_website_configuration" "suppdev-client" {
   index_document {
     suffix = "index.html"
   }
+
+  error_document {
+    suffix = "error.html"
+  }
 }
 
 resource "aws_s3_bucket_acl" "suppdev-client" {
