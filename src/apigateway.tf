@@ -1,0 +1,35 @@
+# API
+resource "aws_apigatewayv2_api" "api" {
+  name          = "Profiles API"
+  description   = "Profiles API"
+  protocol_type = "HTTP"
+
+  cors_configuration {
+    allow_origins = ["*"]
+    allow_methods = ["*"]
+    allow_headers = ["*"]
+  }
+}
+
+resource "aws_apigatewayv2_stage" "api_stage" {
+  api_id      = aws_apigatewayv2_api.api.id
+  name        = "$default"
+  auto_deploy = true
+}
+
+resource "aws_apigatewayv2_deployment" "api_deployment" {
+  api_id      = aws_apigatewayv2_api.api.id
+  description = "Profiles API deployment"
+
+  triggers = {
+    redeployment = sha1(join(",", [
+      jsonencode(aws_apigatewayv2_integration.get_profile_integration),
+      jsonencode(aws_apigatewayv2_route.get_profile_route),
+      ],
+    ))
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}

@@ -11,3 +11,10 @@ variable "get_profile_bin_path" {
   type    = string
   default = "./bin/get_profile/bootstrap"
 }
+
+variable "create_payment_bin_path" {
+  description = "The binary path for the GetProfile lambda."
+
+  type    = string
+  default = "./bin/create_payment/bootstrap"
+}
