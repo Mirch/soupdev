@@ -10,7 +10,7 @@ resource "aws_s3_bucket_website_configuration" "suppdev-client" {
   }
 
   error_document {
-    suffix = "error.html"
+    key = "index.html"
   }
 }
 
