@@ -43,6 +43,7 @@ jobs:
     - name: Build backend
       id: build-backend
       run: |
+        sudo apt install pkg-config
         sudo apt install libssl-dev
         just build-backend profiles
         just build-backend payments
