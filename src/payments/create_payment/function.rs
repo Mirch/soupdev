@@ -38,6 +38,7 @@ pub async fn func(_event: Request) -> Result<impl IntoResponse, Error> {
         price: Option::None,
         tax_rates: Option::None,
     }]));
+    params.mode = Some(stripe::CheckoutSessionMode::Payment);
 
     let session = stripe::CheckoutSession::create(&client, params)
         .await
