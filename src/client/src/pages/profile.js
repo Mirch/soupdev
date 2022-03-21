@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import { getProfileAsync } from '../utils/api';
 import Button from 'react-bootstrap/Button';
+import { api_uri } from '../utils/api';
 
 import { Payment } from '../components/payment';
 
@@ -28,9 +29,9 @@ export function Profile() {
                 <br />
                 <p className="profile-description">{token.description}</p>
                 <div className="donations-container">
-                <form action="https://ahx9w3qr4k.execute-api.eu-west-1.amazonaws.com/pay" method="POST">
-                    <button type="submit">Checkout</button>
-                </form>
+                    <form action={api_uri + "/pay"} method="POST">
+                        <button type="submit">Checkout</button>
+                    </form>
                 </div>
             </div>
         </div>
