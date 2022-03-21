@@ -25,7 +25,7 @@ pub async fn func(_event: Request) -> Result<impl IntoResponse, Error> {
                     tax_code: Option::None,
                 },
             )),
-            unit_amount: Some(Box::new(10)),
+            unit_amount: Some(Box::new(1000)),
             product: Option::None,
             recurring: Option::None,
             tax_behavior: Option::None,
@@ -40,13 +40,10 @@ pub async fn func(_event: Request) -> Result<impl IntoResponse, Error> {
     }]));
     params.mode = Some(stripe::CheckoutSessionMode::Payment);
 
-    println!("Creating session!");
     let session = stripe::CheckoutSession::create(&client, params)
         .await
         .unwrap();
-    println!("Created session!");
     let url = session.url.unwrap();
-    println!("Unwrapped url: {}", *url);
 
     let response = Response::builder()
         .status(303)
