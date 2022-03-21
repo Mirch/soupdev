@@ -8,8 +8,10 @@ output_file_name = "bootstrap"
 
 commands = []
 
-commands.append("echo [BUILD] Installing musl-tools...")
+commands.append("echo [BUILD] Installing dependencies...")
 commands.append("sudo apt install musl-tools")
+commands.append("sudo apt install pkg-config")
+commands.append("sudo apt install libssl-dev")
 
 commands.append("echo [BUILD] Building the Rust project...")
 commands.append(f"cargo build --release --target {build_target}")
