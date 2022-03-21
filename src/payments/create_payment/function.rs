@@ -1,8 +1,8 @@
 use lambda_http::{Error, IntoResponse, Request, Response};
 use lambda_layer::environment::get_env_variable;
 
-pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
-    let domain = get_env_variable("DOMAIN");
+pub async fn func(_event: Request) -> Result<impl IntoResponse, Error> {
+    let domain = format!("http://{}", get_env_variable("DOMAIN"));
 
     let secret_key = "sk_test_HmtYQSWjVu1dHEb4CvXxkmBc00MEphxieW";
     let client = stripe::Client::new(secret_key);
