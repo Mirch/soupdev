@@ -1,7 +1,7 @@
 # API
 resource "aws_apigatewayv2_api" "api" {
-  name          = "Profiles API"
-  description   = "Profiles API"
+  name          = "Suppdev API"
+  description   = "Suppdev API"
   protocol_type = "HTTP"
 
   cors_configuration {
@@ -19,12 +19,14 @@ resource "aws_apigatewayv2_stage" "api_stage" {
 
 resource "aws_apigatewayv2_deployment" "api_deployment" {
   api_id      = aws_apigatewayv2_api.api.id
-  description = "Profiles API deployment"
+  description = "Suppdev API deployment"
 
   triggers = {
     redeployment = sha1(join(",", [
       jsonencode(aws_apigatewayv2_integration.get_profile_integration),
       jsonencode(aws_apigatewayv2_route.get_profile_route),
+      jsonencode(aws_apigatewayv2_integration.create_payment_integration),
+      jsonencode(aws_apigatewayv2_route.create_payment_route),
       ],
     ))
   }
