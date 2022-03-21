@@ -44,6 +44,7 @@ jobs:
       id: build-backend
       run: |
         just build-backend profiles
+        just build-backend payments
       
     - name: Terraform Plan
       id: plan
