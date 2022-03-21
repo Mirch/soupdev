@@ -9,6 +9,12 @@ resource "aws_lambda_function" "create_payment_lambda" {
   runtime = "provided"
 
   role = aws_iam_role.create_payment.arn
+
+  environment {
+    variables = {
+      DOMAIN = aws_s3_bucket_website_configuration.suppdev-client.website_endpoint
+    }
+  }
 }
 
 data "archive_file" "create_payment_archive" {

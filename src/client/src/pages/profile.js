@@ -28,8 +28,9 @@ export function Profile() {
                 <br />
                 <p className="profile-description">{token.description}</p>
                 <div className="donations-container">
-                    <Button variant="warning">Donate</Button>
-                    <Payment />
+                <form action="https://ahx9w3qr4k.execute-api.eu-west-1.amazonaws.com/pay" method="POST">
+                    <button type="submit">Checkout</button>
+                </form>
                 </div>
             </div>
         </div>

@@ -1,10 +1,17 @@
 use lambda_http::{Error, IntoResponse, Request, Response};
+use lambda_layer::environment::get_env_variable;
 
 pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
+    let domain = get_env_variable("DOMAIN");
+
     let secret_key = "sk_test_HmtYQSWjVu1dHEb4CvXxkmBc00MEphxieW";
     let client = stripe::Client::new(secret_key);
 
-    let mut params = stripe::CreateCheckoutSession::new("cancel_url", "success_url");
+    let cancel_url  = format!("{}/payment/cancel", domain);
+    let success_url  = format!("{}/payment/success", domain);
+
+
+    let mut params = stripe::CreateCheckoutSession::new(cancel_url.as_str(), success_url.as_str());
 
     params.line_items = Some(Box::new(vec![stripe::CreateCheckoutSessionLineItems {
         price_data: Some(Box::new(stripe::CreateCheckoutSessionLineItemsPriceData {
@@ -32,7 +39,9 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
         tax_rates: Option::None,
     }]));
 
-    let session = stripe::CheckoutSession::create(&client, params).await.unwrap();
+    let session = stripe::CheckoutSession::create(&client, params)
+        .await
+        .unwrap();
     let url = session.url.unwrap();
 
     let response = Response::builder()
