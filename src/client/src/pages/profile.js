@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import { getProfileAsync } from '../utils/api';
 import Button from 'react-bootstrap/Button';
 
+import { Payment } from '../components/payment';
+
 export function Profile() {
     let params = useParams();
     const [token, setToken] = useState(null);
@@ -22,11 +24,12 @@ export function Profile() {
             <div className="profile-container">
                 <h1>{token.username}</h1>
                 <h2>is {token.headline}!</h2>
-                <hr/>
-                <br/>
+                <hr />
+                <br />
                 <p className="profile-description">{token.description}</p>
                 <div className="donations-container">
-                    <Button variant="warning">Donate</Button>    
+                    <Button variant="warning">Donate</Button>
+                    <Payment />
                 </div>
             </div>
         </div>

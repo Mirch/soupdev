@@ -12,7 +12,13 @@ doc = false
 name = "get_profile"
 path = "profiles/get_profile/main.rs"
 
+[[bin]]
+doc = false
+name = "create_payment"
+path = "payments/create_payment/main.rs"
+
 [dependencies]
+async-stripe = { version = "0.13.0", default-features = false, features = ["runtime-async-std-surf", "billing", "webhook-events", "checkout"] }
 aws-config = "0.8.0"
 aws-sdk-dynamodb = "0.8.0"
 lambda_http = "0.5.1"
