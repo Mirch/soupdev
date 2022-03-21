@@ -1,6 +1,6 @@
 # CREATE PAYMENT
 resource "aws_lambda_function" "create_payment_lambda" {
-  function_name = "GetProfile"
+  function_name = "CreatePayment"
 
   source_code_hash = data.archive_file.create_payment_archive.output_base64sha256
   filename         = data.archive_file.create_payment_archive.output_path
