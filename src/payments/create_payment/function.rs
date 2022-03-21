@@ -40,10 +40,13 @@ pub async fn func(_event: Request) -> Result<impl IntoResponse, Error> {
     }]));
     params.mode = Some(stripe::CheckoutSessionMode::Payment);
 
+    println!("Creating session!");
     let session = stripe::CheckoutSession::create(&client, params)
         .await
         .unwrap();
+    println!("Created session!");
     let url = session.url.unwrap();
+    println!("Unwrapped url: {}", *url);
 
     let response = Response::builder()
         .status(303)
