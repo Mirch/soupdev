@@ -77,6 +77,9 @@ resource "aws_lambda_function" "log_payment_lambda" {
   role = aws_iam_role.log_payment.arn
 
   environment {
+    variables = {
+      PAYMENTS_TABLE_NAME = aws_dynamodb_table.payments.name
+    }
   }
 }
 
@@ -102,6 +105,14 @@ data "aws_iam_policy_document" "log_payment_assume_policy" {
 }
 
 data "aws_iam_policy_document" "log_payment_policy_document" {
+  statement {
+    actions = [
+      "dynamodb:PutItem",
+    ]
+    resources = [
+      aws_dynamodb_table.payments.arn,
+    ]
+  }
   statement {
     actions = [
       "logs:CreateLogGroup",
