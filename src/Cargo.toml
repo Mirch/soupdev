@@ -3,19 +3,27 @@ name = "suppdev"
 version = "0.1.0"
 edition = "2021"
 
+# Library
 [lib]
 name = "lambda_layer"
 path = "lambda_layer/mod.rs"
 
+# Profiles
 [[bin]]
 doc = false
 name = "get_profile"
 path = "profiles/get_profile/main.rs"
 
+# Payments
 [[bin]]
 doc = false
 name = "create_payment"
 path = "payments/create_payment/main.rs"
+
+[[bin]]
+doc = false
+name = "log_payment"
+path = "payments/log_payment/main.rs"
 
 [dependencies]
 async-stripe = { version = "0.13.0", default-features = false, features = ["runtime-async-std-surf", "billing", "webhook-events", "checkout"] }

@@ -3,13 +3,11 @@ use lambda_layer::environment::get_env_variable;
 
 pub async fn func(_event: Request) -> Result<impl IntoResponse, Error> {
     let domain = format!("http://{}", get_env_variable("DOMAIN"));
-
     let secret_key = "sk_test_HmtYQSWjVu1dHEb4CvXxkmBc00MEphxieW";
     let client = stripe::Client::new(secret_key);
 
-    let cancel_url  = format!("{}/payment/cancel", domain);
-    let success_url  = format!("{}/payment/success", domain);
-
+    let cancel_url = format!("{}/payment/cancel", domain);
+    let success_url = format!("{}/payment/success", domain);
 
     let mut params = stripe::CreateCheckoutSession::new(cancel_url.as_str(), success_url.as_str());
 

@@ -5,6 +5,10 @@ variable "aws_region" {
   default = "eu-west-1"
 }
 
+variable "stripe_api_token" {
+  type = string
+}
+
 variable "get_profile_bin_path" {
   description = "The binary path for the GetProfile lambda."
 
@@ -13,8 +17,15 @@ variable "get_profile_bin_path" {
 }
 
 variable "create_payment_bin_path" {
-  description = "The binary path for the GetProfile lambda."
+  description = "The binary path for the CreatePayment lambda."
 
   type    = string
   default = "./bin/create_payment/bootstrap"
+}
+
+variable "log_payment_bin_path" {
+  description = "The binary path for the LogPayment lambda."
+
+  type    = string
+  default = "./bin/log_payment/bootstrap"
 }
