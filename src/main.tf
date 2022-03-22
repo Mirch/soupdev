@@ -9,7 +9,7 @@ terraform {
       version = "~> 2.2.0"
     }
     stripe = {
-      source = "franckverrot/stripe"
+      source  = "franckverrot/stripe"
       version = "1.8.0"
     }
     null = {
@@ -35,5 +35,5 @@ provider "aws" {
 
 provider "stripe" {
   # NOTE: This is populated from the `TF_VAR_stripe_api_token` environment variable.
-  api_token = "${var.stripe_api_token}"
+  api_token = var.stripe_api_token
 }
