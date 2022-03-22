@@ -44,8 +44,7 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
         .select(Select::AllAttributes)
         .send();
 
-    let result = match query.await
-    {
+    let result = match query.await {
         Ok(resp) => {
             if resp.count == 0 {
                 ()
@@ -68,7 +67,12 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
                 _ => "".to_string(),
             };
 
-            User { uid, username, headline, description }
+            User {
+                uid,
+                username,
+                headline,
+                description,
+            }
         }
         Err(e) => {
             println!("Error: {}", e.to_string());
