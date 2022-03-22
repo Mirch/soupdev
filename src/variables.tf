@@ -5,6 +5,10 @@ variable "aws_region" {
   default = "eu-west-1"
 }
 
+variable "stripe_api_token" {
+  type = string
+}
+
 variable "get_profile_bin_path" {
   description = "The binary path for the GetProfile lambda."
 
