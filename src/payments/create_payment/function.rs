@@ -2,7 +2,7 @@ use std::str::FromStr;
 
 use aws_sdk_dynamodb::{Client, model::AttributeValue};
 use lambda_http::{Error, IntoResponse, Request, Response};
-use lambda_layer::{environment::get_env_variable, payment::Payment};
+use lambda_layer::{environment::get_env_variable, payment::{Payment, PaymentStatus}};
 use stripe::{Expandable::*, PaymentIntentId};
 use uuid::Uuid;
 
@@ -13,9 +13,7 @@ pub async fn func(_event: Request) -> Result<impl IntoResponse, Error> {
 
     let cancel_url = format!("{}/payment/cancel", domain);
     let success_url = format!("{}/payment/success", domain);
-
     let mut params = stripe::CreateCheckoutSession::new(cancel_url.as_str(), success_url.as_str());
-
     params.line_items = Some(Box::new(vec![stripe::CreateCheckoutSessionLineItems {
         price_data: Some(Box::new(stripe::CreateCheckoutSessionLineItemsPriceData {
             currency: stripe::Currency::USD,
@@ -57,14 +55,6 @@ pub async fn func(_event: Request) -> Result<impl IntoResponse, Error> {
     };
     let intent_id = String::from(intent_id.as_str());
 
-    let payment = Payment {
-        id: Uuid::new_v4().to_string(),
-        from: String::new(),
-        to: String::new(),
-        intent_id: String::from(intent_id.as_str()),
-        amount: 0,
-    };
-
     let shared_config = aws_config::from_env().load().await;
     let client = Client::new(&shared_config);
     let table_name = get_env_variable("PAYMENTS_TABLE_NAME");
@@ -77,7 +67,7 @@ pub async fn func(_event: Request) -> Result<impl IntoResponse, Error> {
         .item("to", AttributeValue::S(String::new()))
         .item("amount", AttributeValue::N("0".to_string()))
         .item("order_id", AttributeValue::S(intent_id))
-        .item("status", AttributeValue::Bool(true));
+        .item("status", AttributeValue::S((PaymentStatus::Pending as i32).to_string()));
 
     let _result = match request.send().await {
         Ok(_value) => println!("Item added successfully!"),

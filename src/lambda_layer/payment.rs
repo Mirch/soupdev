@@ -1,3 +1,9 @@
+pub enum PaymentStatus {
+    Pending = 0,
+    Paid = 1,
+    Cancelled = 2
+}
+
 pub struct Payment {
     pub id: String,
     pub from: String,
