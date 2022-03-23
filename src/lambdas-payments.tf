@@ -79,7 +79,7 @@ resource "aws_lambda_function" "log_payment_lambda" {
   environment {
     variables = {
       PAYMENTS_TABLE_NAME   = aws_dynamodb_table.payments.name
-      STRIPE_WEBHOOK_SECRET = stripe_webhook_endpoint.payments.secret
+      STRIPE_WEBHOOK_SECRET = stripe_webhook_endpoint.successful_payments.secret
     }
   }
 }
