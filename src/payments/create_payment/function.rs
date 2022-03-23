@@ -55,7 +55,7 @@ pub async fn func(_event: Request) -> Result<impl IntoResponse, Error> {
         },
         None => panic!("No payment intent found."),
     };
-    let intent_id = String::from(intent_id.to_str());
+    let intent_id = String::from(intent_id.as_str());
 
     let payment = Payment {
         id: Uuid::new_v4().to_string(),
