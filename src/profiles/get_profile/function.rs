@@ -1,7 +1,8 @@
-use aws_sdk_dynamodb::model::{AttributeValue, AttributeValue::*, Select};
+use aws_sdk_dynamodb::model::{AttributeValue, AttributeValue::*};
 use aws_sdk_dynamodb::Client;
-use lambda_http::{Error, IntoResponse, Request, RequestExt, Response};
+use lambda_http::{Error, IntoResponse, Request, Response};
 use lambda_layer::environment::get_env_variable;
+use lambda_layer::request_utils::get_query_string_parameter;
 use lambda_layer::user::User;
 use serde_json::json;
 
@@ -9,15 +10,8 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
     let users_table_name = get_env_variable("USERS_TABLE_NAME");
     let username_index = get_env_variable("USERS_USERNAME_INDEX");
 
-    let uid = match event.query_string_parameters().first("uid") {
-        Some(value) => String::from(value),
-        _ => String::from(""),
-    };
-
-    let username = match event.query_string_parameters().first("username") {
-        Some(value) => String::from(value),
-        _ => String::from(""),
-    };
+    let uid = get_query_string_parameter(&event, "uid");
+    let username = get_query_string_parameter(&event, "username");
 
     if uid.is_empty() && username.is_empty() {
         return Ok(Response::builder()
@@ -40,11 +34,9 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
         .expression_attribute_values(
             ":value".to_string(),
             AttributeValue::S(key_value.to_string()),
-        )
-        .select(Select::AllAttributes)
-        .send();
+        );
 
-    let result = match query.await {
+    let result = match query.send().await {
         Ok(resp) => {
             if resp.count == 0 {
                 ()
