@@ -17,9 +17,12 @@ export function Profile() {
         }
         getToken();
     }, [])
+    const [donation, setDonation] = useState(5);
+
     if (!token) {
         return <div></div>;
     }
+    let paymentQuery = `/pay?to=${token.username}&donation=${donation}`;
     return (
         <div className="page-container">
             <div className="profile-container">
@@ -29,7 +32,8 @@ export function Profile() {
                 <br />
                 <p className="profile-description">{token.description}</p>
                 <div className="donations-container">
-                    <form action={api_uri + "/pay"} method="POST">
+                    <form action={api_uri + paymentQuery} method="POST">
+                        <input type="number" value={donation} onChange={event => setDonation(event.target.value)}/>
                         <button type="submit">Checkout</button>
                     </form>
                 </div>
