@@ -12,7 +12,8 @@ resource "aws_lambda_function" "create_payment_lambda" {
 
   environment {
     variables = {
-      DOMAIN = aws_s3_bucket_website_configuration.suppdev-client.website_endpoint
+      PAYMENTS_TABLE_NAME = aws_dynamodb_table.payments.name
+      DOMAIN              = aws_s3_bucket_website_configuration.suppdev-client.website_endpoint
     }
   }
 }
@@ -39,6 +40,14 @@ data "aws_iam_policy_document" "create_payment_assume_policy" {
 }
 
 data "aws_iam_policy_document" "create_payment_policy_document" {
+  statement {
+    actions = [
+      "dynamodb:PutItem",
+    ]
+    resources = [
+      aws_dynamodb_table.payments.arn,
+    ]
+  }
   statement {
     actions = [
       "logs:CreateLogGroup",
@@ -108,12 +117,22 @@ data "aws_iam_policy_document" "log_payment_assume_policy" {
 data "aws_iam_policy_document" "log_payment_policy_document" {
   statement {
     actions = [
-      "dynamodb:PutItem",
+      "dynamodb:UpdateItem",
     ]
     resources = [
       aws_dynamodb_table.payments.arn,
     ]
   }
+  statement {
+    actions = [
+      "dynamodb:GetItem",
+    ]
+    resources = [
+      aws_dynamodb_table.payments.arn,
+      "${aws_dynamodb_table.payments.arn}/*",
+    ]
+  }
+
   statement {
     actions = [
       "logs:CreateLogGroup",
