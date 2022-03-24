@@ -35,7 +35,7 @@ resource "aws_dynamodb_table" "payments" {
     projection_type = "ALL"
   }
 
-    global_secondary_index {
+  global_secondary_index {
     name            = "PaymentsOrderIdIndex"
     hash_key        = "order_id"
     projection_type = "ALL"

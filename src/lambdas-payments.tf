@@ -12,8 +12,8 @@ resource "aws_lambda_function" "create_payment_lambda" {
 
   environment {
     variables = {
-      PAYMENTS_TABLE_NAME   = aws_dynamodb_table.payments.name
-      DOMAIN = aws_s3_bucket_website_configuration.suppdev-client.website_endpoint
+      PAYMENTS_TABLE_NAME = aws_dynamodb_table.payments.name
+      DOMAIN              = aws_s3_bucket_website_configuration.suppdev-client.website_endpoint
     }
   }
 }
@@ -22,7 +22,7 @@ data "archive_file" "create_payment_archive" {
   type = "zip"
 
   source_file = var.create_payment_bin_path
-  output_path = "create_payment.zip" 
+  output_path = "create_payment.zip"
 }
 
 resource "aws_iam_role" "create_payment" {
@@ -40,7 +40,7 @@ data "aws_iam_policy_document" "create_payment_assume_policy" {
 }
 
 data "aws_iam_policy_document" "create_payment_policy_document" {
-   statement {
+  statement {
     actions = [
       "dynamodb:PutItem",
     ]
@@ -132,7 +132,7 @@ data "aws_iam_policy_document" "log_payment_policy_document" {
       "${aws_dynamodb_table.payments.arn}/*",
     ]
   }
-  
+
   statement {
     actions = [
       "logs:CreateLogGroup",
