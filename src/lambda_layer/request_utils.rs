@@ -12,7 +12,7 @@ pub fn get_header_value(event: &Request<Body>, key: &str) -> String {
 pub fn get_query_string_parameter(event: &Request<Body>, key: &str) -> String {
     match event.query_string_parameters().first(key) {
         Some(value) => String::from(value),
-        None => panic!("Query parameter {} not found.", key),
+        None => String::from(""),
     }
 }
 
