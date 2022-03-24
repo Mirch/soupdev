@@ -2,11 +2,18 @@ use std::str::FromStr;
 
 use aws_sdk_dynamodb::{Client, model::AttributeValue};
 use lambda_http::{Error, IntoResponse, Request, Response};
-use lambda_layer::{environment::get_env_variable, payment::{Payment, PaymentStatus}};
+use lambda_layer::{environment::get_env_variable, payment::{Payment, PaymentStatus}, request_utils::get_query_string_parameter};
 use stripe::{Expandable::*, PaymentIntentId};
 use uuid::Uuid;
 
-pub async fn func(_event: Request) -> Result<impl IntoResponse, Error> {
+pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
+
+    let donation = match get_query_string_parameter(&event, "donation").parse::<i64>() {
+        Ok(n) => n,
+        Err(_err) => panic!("Wrong value.")
+    };
+    let to = get_query_string_parameter(&event, "to");
+
     let domain = format!("http://{}", get_env_variable("DOMAIN"));
     let secret_key = "sk_test_HmtYQSWjVu1dHEb4CvXxkmBc00MEphxieW";
     let client = stripe::Client::new(secret_key);
@@ -19,14 +26,14 @@ pub async fn func(_event: Request) -> Result<impl IntoResponse, Error> {
             currency: stripe::Currency::USD,
             product_data: Some(Box::new(
                 stripe::CreateCheckoutSessionLineItemsPriceDataProductData {
-                    name: "Test".to_string(),
+                    name: format!("Donation towards {}", to),
                     description: Option::None,
                     images: Option::None,
                     metadata: Default::default(),
                     tax_code: Option::None,
                 },
             )),
-            unit_amount: Some(Box::new(1000)),
+            unit_amount: Some(Box::new(donation)),
             product: Option::None,
             recurring: Option::None,
             tax_behavior: Option::None,
@@ -64,8 +71,8 @@ pub async fn func(_event: Request) -> Result<impl IntoResponse, Error> {
         .table_name(table_name)
         .item("id", AttributeValue::S(Uuid::new_v4().to_string()))
         .item("from", AttributeValue::S(String::new()))
-        .item("to", AttributeValue::S(String::new()))
-        .item("amount", AttributeValue::N("0".to_string()))
+        .item("to", AttributeValue::S(to))
+        .item("amount", AttributeValue::N(donation.to_string()))
         .item("order_id", AttributeValue::S(intent_id))
         .item("status", AttributeValue::S((PaymentStatus::Pending as i32).to_string()));
 
