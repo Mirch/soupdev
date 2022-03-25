@@ -78,7 +78,7 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
 
     let _result = match request.send().await {
         Ok(_value) => println!("Item added successfully!"),
-        Err(_error) => panic!("Could not add item!")
+        Err(error) => panic!("{:?}", error)
     };
 
     let url = session.url.unwrap();
