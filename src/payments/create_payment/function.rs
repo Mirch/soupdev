@@ -52,7 +52,7 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
         .await
         .unwrap();
 
-    let mut intent_id = PaymentIntentId::from_str("").unwrap();
+    let mut intent_id = PaymentIntentId::from_str("pi_test").unwrap();
     match session.payment_intent {
         Some(value) => match *value {
             Id(id) => intent_id = id,
