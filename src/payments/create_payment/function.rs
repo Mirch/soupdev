@@ -9,7 +9,7 @@ use uuid::Uuid;
 pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
 
     let donation = match get_query_string_parameter(&event, "donation").parse::<i64>() {
-        Ok(n) => n,
+        Ok(n) => n * 100, // convert to the higher denomination
         Err(_err) => panic!("Wrong value.")
     };
     let to = get_query_string_parameter(&event, "to");
@@ -18,8 +18,8 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
     let secret_key = "sk_test_HmtYQSWjVu1dHEb4CvXxkmBc00MEphxieW";
     let client = stripe::Client::new(secret_key);
 
-    let cancel_url = format!("{}/payment/cancel", domain);
-    let success_url = format!("{}/payment/success", domain);
+    let cancel_url = format!("{}/profile/{}", domain, to);
+    let success_url = format!("{}/profile/{}", domain, to);
     let mut params = stripe::CreateCheckoutSession::new(cancel_url.as_str(), success_url.as_str());
     params.line_items = Some(Box::new(vec![stripe::CreateCheckoutSessionLineItems {
         price_data: Some(Box::new(stripe::CreateCheckoutSessionLineItemsPriceData {
@@ -75,8 +75,6 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
         .item("amount", AttributeValue::N(donation.to_string()))
         .item("order_id", AttributeValue::S(intent_id))
         .item("status", AttributeValue::S((PaymentStatus::Pending as i32).to_string()));
-
-    println!("{:?}", request);
 
     let _result = match request.send().await {
         Ok(_value) => println!("Item added successfully!"),
