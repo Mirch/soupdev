@@ -70,7 +70,7 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
         .put_item()
         .table_name(table_name)
         .item("id", AttributeValue::S(Uuid::new_v4().to_string()))
-        .item("from", AttributeValue::S(String::new()))
+        .item("from", AttributeValue::S(String::from("placeholder")))
         .item("to", AttributeValue::S(to))
         .item("amount", AttributeValue::N(donation.to_string()))
         .item("order_id", AttributeValue::S(intent_id))
