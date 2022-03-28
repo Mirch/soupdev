@@ -25,6 +25,6 @@ pub fn get_body_as_json_string(event: &Request<Body>) -> String {
 
     match result {
         Ok(value) => value,
-        Err(err) => panic!(err)
+        Err(err) => panic!("{}", err)
     }
 }
