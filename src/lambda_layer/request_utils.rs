@@ -18,13 +18,13 @@ pub fn get_query_string_parameter(event: &Request<Body>, key: &str) -> String {
 
 pub fn get_body_as_json_string(event: &Request<Body>) -> String {
     let body = match event.body() {
-        Body::Text(value) => value,
+        Body::Text(value) => value.as_str(),
         _ => panic!("Wrong body format."),
     };
     let result = serde_json::from_str(body);
 
     match result {
         Ok(value) => value,
-        Err(_err) => panic!("Wrong body format.")
+        Err(err) => panic!(err)
     }
 }
