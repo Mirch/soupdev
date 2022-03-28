@@ -20,6 +20,8 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
     let secret = get_env_variable(SECRET_KEY);
     let payload = get_body_as_json_string(&event);
 
+    println!("Signature: {}", signature);
+
     let webhook_event = stripe::Webhook::construct_event(&payload, &signature, &secret);
 
     let webhook_event = match webhook_event {
