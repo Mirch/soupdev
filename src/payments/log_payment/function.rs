@@ -12,7 +12,7 @@ use lambda_layer::request_utils::get_header_value;
 use stripe::EventObject;
 use stripe::PaymentIntentId;
 
-const SIGNATURE_KEY: &str = "STRIPE_SIGNATURE";
+const SIGNATURE_KEY: &str = "Stripe-Signature";
 const SECRET_KEY: &str = "STRIPE_WEBHOOK_SECRET";
 
 pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
