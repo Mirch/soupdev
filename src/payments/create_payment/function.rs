@@ -1,16 +1,19 @@
 use std::str::FromStr;
 
-use aws_sdk_dynamodb::{Client, model::AttributeValue};
+use aws_sdk_dynamodb::{model::AttributeValue, Client};
 use lambda_http::{Error, IntoResponse, Request, Response};
-use lambda_layer::{environment::get_env_variable, payment::{Payment, PaymentStatus}, request_utils::get_query_string_parameter};
+use lambda_layer::{
+    environment::get_env_variable,
+    payment::{Payment, PaymentStatus},
+    request_utils::get_query_string_parameter,
+};
 use stripe::{Expandable::*, PaymentIntentId};
 use uuid::Uuid;
 
 pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
-
     let donation = match get_query_string_parameter(&event, "donation").parse::<i64>() {
         Ok(n) => n * 100, // convert to the higher denomination
-        Err(_err) => panic!("Wrong value.")
+        Err(_err) => panic!("Wrong value."),
     };
     let to = get_query_string_parameter(&event, "to");
 
@@ -74,11 +77,14 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
         .item("to", AttributeValue::S(to))
         .item("amount", AttributeValue::N(donation.to_string()))
         .item("order_id", AttributeValue::S(intent_id))
-        .item("status", AttributeValue::S((PaymentStatus::Pending as i32).to_string()));
+        .item(
+            "status",
+            AttributeValue::S((PaymentStatus::Pending as i32).to_string()),
+        );
 
     let _result = match request.send().await {
         Ok(_value) => println!("Item added successfully!"),
-        Err(error) => panic!("{:?}", error)
+        Err(error) => panic!("{:?}", error),
     };
 
     let url = session.url.unwrap();
