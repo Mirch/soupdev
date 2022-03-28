@@ -24,7 +24,7 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
 
     let webhook_event = match webhook_event {
         Ok(result) => result,
-        Err(_err) => panic!("Could not handle event."),
+        Err(err) => panic!("{}", err),
     };
 
     let mut intent_id = PaymentIntentId::from_str("").unwrap();
