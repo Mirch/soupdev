@@ -21,6 +21,9 @@ pub fn get_body_as_json_string(event: &Request<Body>) -> String {
         Body::Text(value) => value.as_str(),
         _ => panic!("Wrong body format."),
     };
+
+    println!("Body: {}", body);
+
     let result = serde_json::from_str(body);
 
     match result {
