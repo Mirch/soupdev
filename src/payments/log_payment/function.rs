@@ -29,7 +29,7 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
         Err(err) => panic!("{}", err),
     };
 
-    let mut intent_id = PaymentIntentId::from_str("").unwrap();
+    let mut intent_id = PaymentIntentId::from_str("pi_").unwrap();
     match webhook_event.data.object {
         EventObject::PaymentIntent(value) => intent_id = value.id,
         _ => (),
