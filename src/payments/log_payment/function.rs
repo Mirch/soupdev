@@ -33,9 +33,13 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
 
     let mut intent_id = PaymentIntentId::from_str("pi_").unwrap();
     match webhook_event.data.object {
-        EventObject::PaymentIntent(value) => {
-            println!("PI value: {:?}", value);
-            intent_id = value.id;
+        EventObject::Charge(value) => {
+            let expandable_intent = *(value.payment_intent.unwrap());
+
+            match expandable_intent {
+                stripe::Expandable::Id(id) => intent_id = id,
+                _ => ()
+            };
         },
         _ => (),
     };
