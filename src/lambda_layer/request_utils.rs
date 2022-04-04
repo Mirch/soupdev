@@ -24,15 +24,5 @@ pub fn get_body_as_json_string(event: &Request<Body>) -> String {
         _ => panic!("Wrong body format."),
     };
 
-    let result: Result<WebhookEvent, Error> = serde_json::from_str(body);
-
-    let webhook_event = match result {
-        Ok(value) => value,
-        Err(err) => panic!("{}", err),
-    };
-
-    match serde_json::to_string(&webhook_event) {
-        Ok(value) => value,
-        Err(err) => panic!("{}", err),
-    }
+    String::from(body)
 }
