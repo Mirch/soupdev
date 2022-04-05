@@ -121,7 +121,7 @@ data "aws_iam_policy_document" "log_payment_policy_document" {
     actions = [
       "dynamodb:UpdateItem",
       "dynamodb:Query",
-      "dynamodb:GetItem
+      "dynamodb:GetItem"
     ]
     resources = [
       aws_dynamodb_table.payments.arn,
