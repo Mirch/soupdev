@@ -59,7 +59,7 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
 
     let response = match query.send().await {
         Ok(response) => response,
-        Err(_error) => panic!("Could not find entry with order id {}.", intent_id),
+        Err(_error) => panic!("{}", err),
     };
     let payment = response.items().unwrap().first().unwrap();
     let payment_id = payment.get("id").unwrap().to_owned();
