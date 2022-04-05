@@ -76,7 +76,7 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
 
     let result = match update.send().await {
         Ok(_value) => println!("Item updated successfully!"),
-        Err(_error) => panic!("Could not update item!"),
+        Err(error) => panic!("{}", error),
     };
 
     let response = Response::builder()
