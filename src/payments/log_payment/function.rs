@@ -72,7 +72,7 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
         .key("id", payment_id)
         .update_expression("SET status=:s")
         .expression_attribute_values(
-            "s".to_string(),
+            ":s".to_string(),
             AttributeValue::S((PaymentStatus::Paid as i32).to_string()),
         );
 
