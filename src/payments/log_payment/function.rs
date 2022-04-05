@@ -64,6 +64,8 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
     let payment = response.items().unwrap().first().unwrap();
     let payment_id = payment.get("id").unwrap().to_owned();
 
+    println!("{:?}", payment_id);
+
     let update = client
         .update_item()
         .table_name(&table_name)
