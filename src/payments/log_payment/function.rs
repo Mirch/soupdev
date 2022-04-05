@@ -16,22 +16,18 @@ const SIGNATURE_KEY: &str = "Stripe-Signature";
 const SECRET_KEY: &str = "STRIPE_WEBHOOK_SECRET";
 
 pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
+    let order_id_index = get_env_variable("ORDER_ID_INDEX");
+    
     let signature = get_header_value(&event, SIGNATURE_KEY);
     let secret = get_env_variable(SECRET_KEY);
     let payload = get_body_as_json_string(&event);
 
-    println!("Signature: {}", signature);
-
-    let webhook_event = stripe::Webhook::construct_event(&payload, &signature, &secret);
-
-    let webhook_event = match webhook_event {
+    let webhook_event = match stripe::Webhook::construct_event(&payload, &signature, &secret) {
         Ok(result) => result,
         Err(err) => panic!("{}", err),
     };
 
-    println!("Webhook data object: {:?}", webhook_event.data.object);
-
-    let mut intent_id = PaymentIntentId::from_str("pi_").unwrap();
+    let mut intent_id = PaymentIntentId::from_str("pi_").unwrap(); // placeholder payment intent
     match webhook_event.data.object {
         EventObject::Charge(value) => {
             let expandable_intent = *(value.payment_intent.unwrap());
@@ -51,6 +47,7 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
     let query = client
         .query()
         .table_name(&table_name)
+        .index_name(order_id_index)
         .key_condition_expression("#key = :value".to_string())
         .expression_attribute_names("#key".to_string(), "order_id")
         .expression_attribute_values(
@@ -58,6 +55,8 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
             AttributeValue::S(intent_id.to_string()),
         )
         .select(Select::AllAttributes);
+
+    println!("Query: {:?}", query);
 
     let response = match query.send().await {
         Ok(response) => response,
