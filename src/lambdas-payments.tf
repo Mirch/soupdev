@@ -46,6 +46,7 @@ data "aws_iam_policy_document" "create_payment_policy_document" {
     ]
     resources = [
       aws_dynamodb_table.payments.arn,
+      "${aws_dynamodb_table.payments.arn}/*",
     ]
   }
   statement {
