@@ -53,8 +53,7 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
         .expression_attribute_values(
             ":value".to_string(),
             AttributeValue::S(intent_id.to_string()),
-        )
-        .select(Select::AllAttributes);
+        );
 
     println!("Query: {:?}", query);
 
