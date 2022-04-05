@@ -16,7 +16,7 @@ const SIGNATURE_KEY: &str = "Stripe-Signature";
 const SECRET_KEY: &str = "STRIPE_WEBHOOK_SECRET";
 
 pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
-    let order_id_index = get_env_variable("ORDER_ID_INDEX");
+    let order_id_index = get_env_variable("ORDER_ID_INDEX_NAME");
     
     let signature = get_header_value(&event, SIGNATURE_KEY);
     let secret = get_env_variable(SECRET_KEY);
