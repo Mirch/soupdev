@@ -48,6 +48,7 @@ resource "aws_lambda_permission" "log_payment_api_permission" {
   action        = "lambda:InvokeFunction"
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.api.execution_arn}/*/*/${trimprefix(aws_apigatewayv2_route.log_payment_route.route_key, "POST /")}"
+}
 
   # GET PAYMENTS
 resource "aws_apigatewayv2_integration" "log_payment_integration" {
