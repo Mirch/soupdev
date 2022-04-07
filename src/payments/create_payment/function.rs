@@ -79,7 +79,7 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
         .item("order_id", AttributeValue::S(intent_id))
         .item(
             "status",
-            AttributeValue::S((PaymentStatus::Pending as i32).to_string()),
+            AttributeValue::N((PaymentStatus::Pending as i32).to_string()),
         );
 
     let _result = match request.send().await {

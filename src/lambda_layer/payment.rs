@@ -57,7 +57,6 @@ impl Payment {
             AttributeValue::N(value) => value.parse().unwrap(),
             _ => -1
         };
-        println!("Status: {status}");
 
         Payment {
             id,
@@ -66,6 +65,24 @@ impl Payment {
             order_id,
             amount,
             status: PaymentStatus::from_int(status)
+        }
+    }
+}
+
+
+#[derive(Serialize, Deserialize)]
+pub struct PaymentDTO {
+    pub from: String,
+    pub to: String,
+    pub amount: i32
+}
+
+impl PaymentDTO {
+    pub fn from_payment(payment: Payment) -> PaymentDTO {
+        PaymentDTO {
+           from: payment.from,
+           to: payment.to,
+           amount: payment.amount
         }
     }
 }
