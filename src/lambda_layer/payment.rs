@@ -26,7 +26,7 @@ pub struct Payment {
     pub id: String,
     pub from: String,
     pub to: String,
-    pub intent_id: String,
+    pub order_id: String,
     pub amount: i32,
     pub status: PaymentStatus
 }
@@ -45,7 +45,7 @@ impl Payment {
             AttributeValue::S(value) => value.clone(),
             _ => "".to_string()
         };
-        let intent_id = match &map["intent_id"] {
+        let order_id = match &map["order_id"] {
             AttributeValue::S(value) => value.clone(),
             _ => "".to_string()
         };
@@ -55,15 +55,15 @@ impl Payment {
         };
         let status = match &map["status"] {
             AttributeValue::N(value) => value.parse().unwrap(),
-            _ => 0
+            _ => -1
         };
 
         Payment {
-            id: id,
-            from: from,
-            to: to,
-            intent_id: intent_id,
-            amount: amount,
+            id,
+            from,
+            to,
+            order_id,
+            amount,
             status: PaymentStatus::from_int(status)
         }
     }
