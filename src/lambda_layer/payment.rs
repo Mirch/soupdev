@@ -16,7 +16,7 @@ impl PaymentStatus {
             x if x == PaymentStatus::Pending as i32 => PaymentStatus::Pending,
             x if x == PaymentStatus::Paid as i32 => PaymentStatus::Paid,
             x if x == PaymentStatus::Cancelled as i32 => PaymentStatus::Cancelled,
-            _ => panic!("Could not convert value.")
+            _ => panic!("Could not convert value {}.", value)
         }
     }
 }
