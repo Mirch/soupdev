@@ -25,6 +25,11 @@ doc = false
 name = "log_payment"
 path = "payments/log_payment/main.rs"
 
+[[bin]]
+doc = false
+name = "get_payments"
+path = "payments/get_payments/main.rs"
+
 [dependencies]
 async-stripe = { version = "0.13.0", default-features = false, features = ["runtime-async-std-surf", "billing", "webhook-events", "checkout"] }
 openssl = { version = "0.10", features = ["vendored"] }

@@ -3,7 +3,7 @@ use std::str::FromStr;
 use aws_sdk_dynamodb::{model::AttributeValue, Client};
 use lambda_http::{Error, IntoResponse, Request, Response};
 use lambda_layer::{
-    environment::get_env_variable,
+    environment::{get_env_variable, DOMAIN, PAYMENTS_TABLE_NAME},
     payment::{Payment, PaymentStatus},
     request_utils::get_query_string_parameter,
 };
@@ -17,7 +17,7 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
     };
     let to = get_query_string_parameter(&event, "to");
 
-    let domain = format!("http://{}", get_env_variable("DOMAIN"));
+    let domain = format!("http://{}", get_env_variable(DOMAIN));
     let secret_key = "sk_test_HmtYQSWjVu1dHEb4CvXxkmBc00MEphxieW";
     let client = stripe::Client::new(secret_key);
 
@@ -67,7 +67,7 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
 
     let shared_config = aws_config::from_env().load().await;
     let client = Client::new(&shared_config);
-    let table_name = get_env_variable("PAYMENTS_TABLE_NAME");
+    let table_name = get_env_variable(PAYMENTS_TABLE_NAME);
 
     let request = client
         .put_item()

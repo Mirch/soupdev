@@ -5,7 +5,10 @@ use aws_sdk_dynamodb::model::Select;
 use aws_sdk_dynamodb::Client;
 use lambda_http::Response;
 use lambda_http::{Error, IntoResponse, Request};
+use lambda_layer::environment::ORDER_ID_INDEX_NAME;
+use lambda_layer::environment::PAYMENTS_TABLE_NAME;
 use lambda_layer::environment::get_env_variable;
+use lambda_layer::environment::STRIPE_WEBHOOK_SECRET;
 use lambda_layer::payment::PaymentStatus;
 use lambda_layer::request_utils::get_body_as_json_string;
 use lambda_layer::request_utils::get_header_value;
@@ -13,13 +16,12 @@ use stripe::EventObject;
 use stripe::PaymentIntentId;
 
 const SIGNATURE_KEY: &str = "Stripe-Signature";
-const SECRET_KEY: &str = "STRIPE_WEBHOOK_SECRET";
 
 pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
-    let order_id_index = get_env_variable("ORDER_ID_INDEX_NAME");
-    
+    let order_id_index = get_env_variable(ORDER_ID_INDEX_NAME);
+
     let signature = get_header_value(&event, SIGNATURE_KEY);
-    let secret = get_env_variable(SECRET_KEY);
+    let secret = get_env_variable(STRIPE_WEBHOOK_SECRET);
     let payload = get_body_as_json_string(&event);
 
     let webhook_event = match stripe::Webhook::construct_event(&payload, &signature, &secret) {
@@ -34,15 +36,15 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
 
             match expandable_intent {
                 stripe::Expandable::Id(id) => intent_id = id,
-                _ => ()
+                _ => (),
             };
-        },
+        }
         _ => (),
     };
 
     let shared_config = aws_config::from_env().load().await;
     let client = Client::new(&shared_config);
-    let table_name = get_env_variable("PAYMENTS_TABLE_NAME");
+    let table_name = get_env_variable(PAYMENTS_TABLE_NAME);
 
     let query = client
         .query()
