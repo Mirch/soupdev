@@ -13,6 +13,7 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
     let order_id_index = get_env_variable(TO_INDEX_NAME);
 
     let username = get_query_string_parameter(&event, USERNAME_PARAMETER);
+    println!("Username: {username}");
 
     let shared_config = aws_config::from_env().load().await;
     let client = Client::new(&shared_config);
@@ -23,6 +24,7 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
         .key_condition_expression("#key = :value".to_string())
         .expression_attribute_names("#key".to_string(), "to")
         .expression_attribute_values(":value".to_string(), AttributeValue::S(username));
+    println!("Query: {:?}", query);
 
     let result = match query.send().await {
         Ok(value) => value,
