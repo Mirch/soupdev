@@ -203,6 +203,7 @@ data "aws_iam_policy_document" "get_payments_policy_document" {
     ]
     resources = [
       aws_dynamodb_table.payments.arn,
+      "${aws_dynamodb_table.payments.arn}/*",
     ]
   }
 
