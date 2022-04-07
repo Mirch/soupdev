@@ -57,6 +57,7 @@ impl Payment {
             AttributeValue::N(value) => value.parse().unwrap(),
             _ => -1
         };
+        println!("Status: {status}");
 
         Payment {
             id,
