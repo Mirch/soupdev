@@ -32,7 +32,7 @@ variable "log_payment_bin_path" {
   default = "./bin/log_payment/bootstrap"
 }
 
-variable "log_payment_bin_path" {
+variable "get_payments_bin_path" {
   description = "The binary path for the LogPayment lambda."
 
   type    = string
