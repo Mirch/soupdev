@@ -2,7 +2,7 @@ use aws_sdk_dynamodb::{model::AttributeValue, Client};
 use lambda_http::{Error, IntoResponse, Request};
 use lambda_layer::{
     environment::{get_env_variable, PAYMENTS_TABLE_NAME, TO_INDEX_NAME},
-    request_utils::get_query_string_parameter, payment::{Payment, PaymentStatus},
+    request_utils::get_query_string_parameter, payment::{Payment, PaymentStatus, PaymentDTO},
 };
 use serde_json::json;
 
@@ -34,7 +34,7 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
     for item in result_items {
         let payment = Payment::from_dynamo_hashmap(item);
         if payment.status == PaymentStatus::Paid {
-            items.push(Payment::from_dynamo_hashmap(item));
+            items.push(PaymentDTO::from_payment(Payment::from_dynamo_hashmap(item)));
         }
     }
 

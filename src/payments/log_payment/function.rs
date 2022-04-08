@@ -66,19 +66,25 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
     let payment = response.items().unwrap().first().unwrap();
     let payment_id = payment.get("id").unwrap().to_owned();
 
+    println!("{:?}", payment_id);
+
     let update = client
         .update_item()
         .table_name(&table_name)
         .key("id", payment_id)
-        .update_expression("SET status=:s")
+        .update_expression("SET #status=:s")
+        .expression_attribute_names(
+            "#status".to_string(),
+            "status".to_string()
+        )
         .expression_attribute_values(
-            "s".to_string(),
+            ":s".to_string(),
             AttributeValue::S((PaymentStatus::Paid as i32).to_string()),
         );
 
     let result = match update.send().await {
         Ok(_value) => println!("Item updated successfully!"),
-        Err(_error) => panic!("Could not update item!"),
+        Err(error) => panic!("{}", error),
     };
 
     let response = Response::builder()

@@ -17,7 +17,7 @@ impl PaymentStatus {
             x if x == PaymentStatus::Pending as i32 => PaymentStatus::Pending,
             x if x == PaymentStatus::Paid as i32 => PaymentStatus::Paid,
             x if x == PaymentStatus::Cancelled as i32 => PaymentStatus::Cancelled,
-            _ => panic!("Could not convert value.")
+            _ => panic!("Could not convert value {}.", value)
         }
     }
 }
@@ -27,7 +27,7 @@ pub struct Payment {
     pub id: String,
     pub from: String,
     pub to: String,
-    pub intent_id: String,
+    pub order_id: String,
     pub amount: i32,
     pub status: PaymentStatus,
     pub created: DateTime<Utc>
@@ -57,7 +57,7 @@ impl Payment {
         };
         let status = match &map["status"] {
             AttributeValue::N(value) => value.parse().unwrap(),
-            _ => 0
+            _ => -1
         };
         let created = match &map["created"] {
             AttributeValue::S(value) => value.clone(),
