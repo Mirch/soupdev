@@ -79,7 +79,7 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
         )
         .expression_attribute_values(
             ":s".to_string(),
-            AttributeValue::S((PaymentStatus::Paid as i32).to_string()),
+            AttributeValue::N((PaymentStatus::Paid as i32).to_string()),
         );
 
     let result = match update.send().await {
