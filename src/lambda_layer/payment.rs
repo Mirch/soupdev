@@ -1,6 +1,7 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, str::FromStr};
 
 use aws_sdk_dynamodb::model::AttributeValue;
+use chrono::{DateTime, Utc, prelude::*};
 use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize, PartialEq)]
@@ -28,7 +29,8 @@ pub struct Payment {
     pub to: String,
     pub order_id: String,
     pub amount: i32,
-    pub status: PaymentStatus
+    pub status: PaymentStatus,
+    pub created: DateTime<Utc>
 }
 
 impl Payment {
@@ -57,6 +59,10 @@ impl Payment {
             AttributeValue::N(value) => value.parse().unwrap(),
             _ => -1
         };
+        let created = match &map["created"] {
+            AttributeValue::S(value) => value.clone(),
+            _ => "".to_string()
+        };
 
         Payment {
             id,
@@ -64,7 +70,8 @@ impl Payment {
             to,
             order_id,
             amount,
-            status: PaymentStatus::from_int(status)
+            status: PaymentStatus::from_int(status),
+            created: created.parse::<DateTime<Utc>>().unwrap()
         }
     }
 }
@@ -74,7 +81,8 @@ impl Payment {
 pub struct PaymentDTO {
     pub from: String,
     pub to: String,
-    pub amount: i32
+    pub amount: i32,
+    pub created: String
 }
 
 impl PaymentDTO {
@@ -82,7 +90,8 @@ impl PaymentDTO {
         PaymentDTO {
            from: payment.from,
            to: payment.to,
-           amount: payment.amount
+           amount: payment.amount,
+           created: payment.created.to_string()
         }
     }
 }
