@@ -47,7 +47,7 @@ impl Payment {
             AttributeValue::S(value) => value.clone(),
             _ => "".to_string()
         };
-        let intent_id = match &map["intent_id"] {
+        let order_id = match &map["order_id"] {
             AttributeValue::S(value) => value.clone(),
             _ => "".to_string()
         };
@@ -68,7 +68,7 @@ impl Payment {
             id,
             from,
             to,
-            intent_id,
+            order_id,
             amount,
             status: PaymentStatus::from_int(status),
             created: created.parse::<DateTime<Utc>>().unwrap()
