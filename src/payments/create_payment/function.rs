@@ -1,6 +1,7 @@
 use std::str::FromStr;
 
 use aws_sdk_dynamodb::{model::AttributeValue, Client};
+use chrono::Utc;
 use lambda_http::{Error, IntoResponse, Request, Response};
 use lambda_layer::{
     environment::{get_env_variable, DOMAIN, PAYMENTS_TABLE_NAME},
@@ -77,6 +78,7 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
         .item("to", AttributeValue::S(to))
         .item("amount", AttributeValue::N(donation.to_string()))
         .item("order_id", AttributeValue::S(intent_id))
+        .item("created", AttributeValue::S(Utc::now().to_string()))
         .item(
             "status",
             AttributeValue::S((PaymentStatus::Pending as i32).to_string()),
