@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import { api_uri } from '../utils/api';
 
 import { Payment } from '../components/payment';
+import { DonationsContainer } from '../components/donationsContainer';
 
 export function Profile() {
     let params = useParams();
@@ -24,7 +25,7 @@ export function Profile() {
     if (!profile) {
         return <div></div>;
     }
-    let paymentQuery = `/pay?to=${profile.username}&donation=${donation}`;
+    let paymentQuery = `/pay?to=${profile.username}&donation=${donation}&donor=${donor}`;
     return (
         <div className="page-container">
             <div className="profile-container">
@@ -40,6 +41,8 @@ export function Profile() {
                         <button type="submit">Checkout</button>
                     </form>
                 </div>
+                <DonationsContainer>
+                </DonationsContainer>
             </div>
         </div>
     )
