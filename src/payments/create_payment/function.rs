@@ -12,6 +12,8 @@ use stripe::{Expandable::*, PaymentIntentId};
 use uuid::Uuid;
 
 pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
+
+    let donor = get_query_string_parameter(&event, "donor");
     let donation = match get_query_string_parameter(&event, "donation").parse::<i64>() {
         Ok(n) => n * 100, // convert to the higher denomination
         Err(_err) => panic!("Wrong value."),
@@ -74,7 +76,7 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
         .put_item()
         .table_name(table_name)
         .item("id", AttributeValue::S(Uuid::new_v4().to_string()))
-        .item("from", AttributeValue::S(String::from("placeholder")))
+        .item("from", AttributeValue::S(donor))
         .item("to", AttributeValue::S(to))
         .item("amount", AttributeValue::N(donation.to_string()))
         .item("order_id", AttributeValue::S(intent_id))
