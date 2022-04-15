@@ -1,12 +1,11 @@
 import './profile.css';
 import { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
-import { getProfileAsync } from '../utils/api';
-import Button from 'react-bootstrap/Button';
+import { getProfileAsync, getDonationsAsync } from '../utils/api';
 import { api_uri } from '../utils/api';
 
-import { Payment } from '../components/payment';
-import { DonationsContainer } from '../components/donationsContainer';
+import { DonationsContainer } from '../components/donations/donationsContainer';
+import { Donation } from '../components/donations/donation';
 
 export function Profile() {
     let params = useParams();
@@ -19,10 +18,18 @@ export function Profile() {
         getProfile();
     }, []);
     const [donation, setDonation] = useState(5);
-    const [donor, setDonor] = useState(5);
+    const [donor, setDonor] = useState("");
+    const [donations, setDonations] = useState(null);
+    useEffect(() => {
+        async function getDonations() {
+            const donations = await getDonationsAsync(params.username);
+            setDonations(donations);
+        }
+        getDonations();
+    }, []);
 
 
-    if (!profile) {
+    if (!profile || !donations) {
         return <div></div>;
     }
     let paymentQuery = `/pay?to=${profile.username}&donation=${donation}&donor=${donor}`;
@@ -34,14 +41,19 @@ export function Profile() {
                 <hr />
                 <br />
                 <p className="profile-description">{profile.description}</p>
-                <div className="donations-container">
+                <div className="payment-container">
                     <form action={api_uri + paymentQuery} method="POST">
-                        <input type="text" value={donor} onChange={event => setDonor(event.target.value)} />
-                        <input type="number" value={donation} onChange={event => setDonation(event.target.value)} />
+                        <input type="text" placeholder='name' value={donor} onChange={event => setDonor(event.target.value)} />
+                        <input type="number" placeholder='5' value={donation} onChange={event => setDonation(event.target.value)} />
                         <button type="submit">Checkout</button>
                     </form>
                 </div>
                 <DonationsContainer>
+                    {
+                        donations.map((donation, index) => {
+                            return <Donation key={index} from={donation.from} amount={donation.amount} date={donation.created} />
+                        })
+                    }
                 </DonationsContainer>
             </div>
         </div>

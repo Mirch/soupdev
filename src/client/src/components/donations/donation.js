@@ -1,12 +1,12 @@
 export function Donation(props) {
-    let donor = props.donor;
-    let donation = props.donation;
+    let from = props.from;
+    let amount = props.amount / 100.0;
     let date = props.date;
 
     return (
         <div>
             <h6>{date}</h6>
-            <h3>{donor}</h3> donated <b>${donation}</b>.
+            <h3>{from}</h3> donated <b>${amount}</b>.
         </div>
     );
 }
