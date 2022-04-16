@@ -5,3 +5,10 @@ export async function getProfileAsync(username) {
     let data = await response.json();
     return data;
 }
+
+export async function getDonationsAsync(username) {
+    let response = await fetch(`${api_uri}/payments?username=${username}`);
+    let data = await response.json();
+    console.log(data);
+    return data;
+}
