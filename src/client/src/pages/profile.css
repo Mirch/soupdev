@@ -1,6 +1,6 @@
 .page-container {
     width:100vw;
-    height:100vh;
+    height:100%;
     background-color: orange;
     display:flex;
     justify-content: center;

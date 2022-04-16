@@ -1,7 +1,8 @@
 export function Donation(props) {
     let from = props.from;
     let amount = props.amount / 100.0;
-    let date = props.date;
+    let dateOptions = {year: 'numeric', month: 'long', day: 'numeric' };
+    let date = new Date(props.date).toLocaleString("en-US", dateOptions);
 
     return (
         <div>
