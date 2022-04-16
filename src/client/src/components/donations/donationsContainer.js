@@ -2,7 +2,7 @@ import "./donations.css";
 
 export function DonationsContainer(props) {
     return (
-        <div class="donations-container">
+        <div className="donations-container">
             {props.children}
         </div>
     );
