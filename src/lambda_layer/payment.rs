@@ -76,18 +76,25 @@ impl Payment {
     }
 }
 
+#[derive(Serialize, Deserialize)]
+pub struct PaymentRequestDTO {
+    pub from: String,
+    pub to: String,
+    pub amount: i32,
+}
+
 
 #[derive(Serialize, Deserialize)]
-pub struct PaymentDTO {
+pub struct PaymentResponseDTO {
     pub from: String,
     pub to: String,
     pub amount: i32,
     pub created: String
 }
 
-impl PaymentDTO {
-    pub fn from_payment(payment: Payment) -> PaymentDTO {
-        PaymentDTO {
+impl PaymentResponseDTO {
+    pub fn from_payment(payment: Payment) -> PaymentResponseDTO {
+        PaymentResponseDTO {
            from: payment.from,
            to: payment.to,
            amount: payment.amount,

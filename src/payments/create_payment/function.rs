@@ -5,41 +5,39 @@ use chrono::Utc;
 use lambda_http::{Error, IntoResponse, Request, Response};
 use lambda_layer::{
     environment::{get_env_variable, DOMAIN, PAYMENTS_TABLE_NAME},
-    payment::{Payment, PaymentStatus},
-    request_utils::get_query_string_parameter,
+    payment::{PaymentStatus, PaymentRequestDTO},
+    request_utils::{get_body},
 };
 use stripe::{Expandable::*, PaymentIntentId};
 use uuid::Uuid;
 
 pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
 
-    let donor = get_query_string_parameter(&event, "donor");
-    let donation = match get_query_string_parameter(&event, "donation").parse::<i64>() {
-        Ok(n) => n * 100, // convert to the higher denomination
-        Err(_err) => panic!("Wrong value."),
+    let body: PaymentRequestDTO = match get_body(&event) {
+        Ok(value) => value,
+        Err(error) => panic!("Could not get the request body: {}", error)
     };
-    let to = get_query_string_parameter(&event, "to");
 
     let domain = format!("http://{}", get_env_variable(DOMAIN));
     let secret_key = "sk_test_HmtYQSWjVu1dHEb4CvXxkmBc00MEphxieW";
     let client = stripe::Client::new(secret_key);
 
-    let cancel_url = format!("{}/profile/{}", domain, to);
-    let success_url = format!("{}/profile/{}", domain, to);
+    let cancel_url = format!("{}/profile/{}", domain, body.to);
+    let success_url = format!("{}/profile/{}", domain, body.to);
     let mut params = stripe::CreateCheckoutSession::new(cancel_url.as_str(), success_url.as_str());
     params.line_items = Some(Box::new(vec![stripe::CreateCheckoutSessionLineItems {
         price_data: Some(Box::new(stripe::CreateCheckoutSessionLineItemsPriceData {
             currency: stripe::Currency::USD,
             product_data: Some(Box::new(
                 stripe::CreateCheckoutSessionLineItemsPriceDataProductData {
-                    name: format!("Donation towards {}", to),
+                    name: format!("Donation towards {}", body.to),
                     description: Option::None,
                     images: Option::None,
                     metadata: Default::default(),
                     tax_code: Option::None,
                 },
             )),
-            unit_amount: Some(Box::new(donation)),
+            unit_amount: Some(Box::new(body.amount.into())),
             product: Option::None,
             recurring: Option::None,
             tax_behavior: Option::None,
@@ -76,9 +74,9 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
         .put_item()
         .table_name(table_name)
         .item("id", AttributeValue::S(Uuid::new_v4().to_string()))
-        .item("from", AttributeValue::S(donor))
-        .item("to", AttributeValue::S(to))
-        .item("amount", AttributeValue::N(donation.to_string()))
+        .item("from", AttributeValue::S(body.from))
+        .item("to", AttributeValue::S(body.to))
+        .item("amount", AttributeValue::N(body.amount.to_string()))
         .item("order_id", AttributeValue::S(intent_id))
         .item("created", AttributeValue::S(Utc::now().to_string()))
         .item(
