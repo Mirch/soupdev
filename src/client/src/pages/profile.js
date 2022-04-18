@@ -41,7 +41,7 @@ export function Profile() {
                 <br />
                 <p className="profile-description">{profile.description}</p>
                 <div className="payment-container">
-                    <form action={api_uri} method="POST">
+                    <form>
                         <input
                             type="text"
                             placeholder='name'
