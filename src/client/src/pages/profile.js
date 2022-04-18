@@ -32,7 +32,6 @@ export function Profile() {
     if (!profile || !donations) {
         return <div></div>;
     }
-    let paymentQuery = `/pay?to=${profile.username}&donation=${donation}&donor=${donor}`;
     return (
         <div className="page-container">
             <div className="profile-container">
@@ -42,10 +41,24 @@ export function Profile() {
                 <br />
                 <p className="profile-description">{profile.description}</p>
                 <div className="payment-container">
-                    <form action={api_uri + paymentQuery} method="POST">
-                        <input type="text" placeholder='name' value={donor} onChange={event => setDonor(event.target.value)} />
-                        <input type="number" placeholder='5' value={donation} onChange={event => setDonation(event.target.value)} />
-                        <button type="submit">Checkout</button>
+                    <form action={api_uri} method="POST">
+                        <input
+                            type="text"
+                            placeholder='name'
+                            value={donor}
+                            onChange={event => setDonor(event.target.value)}
+                        />
+                        <input
+                            type="number"
+                            placeholder='5'
+                            value={donation}
+                            onChange={event => setDonation(event.target.value)}
+                        />
+                        <button
+                            type="submit"
+                            onSubmit={event => sendPayment({ to: profile.username, from: donor, amount: donation })}>
+                            Checkout
+                        </button>
                     </form>
                 </div>
                 <DonationsContainer>
