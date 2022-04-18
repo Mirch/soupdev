@@ -58,10 +58,7 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
 
     let mut intent_id = PaymentIntentId::from_str("pi_test").unwrap();
     match session.payment_intent {
-        Some(value) => match *value {
-            Id(id) => intent_id = id,
-            _ => (),
-        },
+        Some(value) => if let Id(id) = *value { intent_id = id },
         None => panic!("No payment intent found."),
     };
     let intent_id = String::from(intent_id.as_str());

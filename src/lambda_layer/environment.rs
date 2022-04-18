@@ -6,7 +6,7 @@ pub fn get_env_variable(var_name: &str) -> String {
         None => panic!("{} is not set.", var_name),
     };
 
-    return env_variable;
+    env_variable
 }
 
 // General

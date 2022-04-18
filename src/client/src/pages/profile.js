@@ -1,7 +1,7 @@
 import './profile.css';
 import { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
-import { getProfileAsync, getDonationsAsync } from '../utils/api';
+import { getProfileAsync, getDonationsAsync, sendPayment } from '../utils/api';
 import { api_uri } from '../utils/api';
 
 import { DonationsContainer } from '../components/donations/donationsContainer';

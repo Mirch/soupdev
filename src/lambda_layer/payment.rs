@@ -1,7 +1,7 @@
-use std::{collections::HashMap, str::FromStr};
+use std::{collections::HashMap};
 
 use aws_sdk_dynamodb::model::AttributeValue;
-use chrono::{DateTime, Utc, prelude::*};
+use chrono::{DateTime, Utc};
 use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize, PartialEq)]

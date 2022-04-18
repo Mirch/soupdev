@@ -36,6 +36,6 @@ where
         _ => panic!("Wrong body format."),
     };
 
-    let response: T = serde_json::from_str(&body)?;
+    let response: T = serde_json::from_str(body)?;
     Ok(response)
 }
