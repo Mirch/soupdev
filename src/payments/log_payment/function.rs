@@ -1,13 +1,12 @@
 use std::str::FromStr;
 
 use aws_sdk_dynamodb::model::AttributeValue;
-use aws_sdk_dynamodb::model::Select;
 use aws_sdk_dynamodb::Client;
 use lambda_http::Response;
 use lambda_http::{Error, IntoResponse, Request};
+use lambda_layer::environment::get_env_variable;
 use lambda_layer::environment::ORDER_ID_INDEX_NAME;
 use lambda_layer::environment::PAYMENTS_TABLE_NAME;
-use lambda_layer::environment::get_env_variable;
 use lambda_layer::environment::STRIPE_WEBHOOK_SECRET;
 use lambda_layer::payment::PaymentStatus;
 use lambda_layer::request_utils::get_body_as_json_string;
@@ -30,16 +29,12 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
     };
 
     let mut intent_id = PaymentIntentId::from_str("pi_").unwrap(); // placeholder payment intent
-    match webhook_event.data.object {
-        EventObject::Charge(value) => {
-            let expandable_intent = *(value.payment_intent.unwrap());
+    if let EventObject::Charge(value) = webhook_event.data.object {
+        let expandable_intent = *(value.payment_intent.unwrap());
 
-            match expandable_intent {
-                stripe::Expandable::Id(id) => intent_id = id,
-                _ => (),
-            };
+        if let stripe::Expandable::Id(id) = expandable_intent {
+            intent_id = id
         }
-        _ => (),
     };
 
     let shared_config = aws_config::from_env().load().await;
@@ -73,16 +68,13 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
         .table_name(&table_name)
         .key("id", payment_id)
         .update_expression("SET #status=:s")
-        .expression_attribute_names(
-            "#status".to_string(),
-            "status".to_string()
-        )
+        .expression_attribute_names("#status".to_string(), "status".to_string())
         .expression_attribute_values(
             ":s".to_string(),
             AttributeValue::N((PaymentStatus::Paid as i32).to_string()),
         );
 
-    let result = match update.send().await {
+    let _result = match update.send().await {
         Ok(_value) => println!("Item updated successfully!"),
         Err(error) => panic!("{}", error),
     };

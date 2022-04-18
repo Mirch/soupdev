@@ -1,7 +1,7 @@
-use std::{collections::HashMap, str::FromStr};
+use std::{collections::HashMap};
 
 use aws_sdk_dynamodb::model::AttributeValue;
-use chrono::{DateTime, Utc, prelude::*};
+use chrono::{DateTime, Utc};
 use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize, PartialEq)]
@@ -76,18 +76,25 @@ impl Payment {
     }
 }
 
+#[derive(Serialize, Deserialize)]
+pub struct PaymentRequestDTO {
+    pub from: String,
+    pub to: String,
+    pub amount: i32,
+}
+
 
 #[derive(Serialize, Deserialize)]
-pub struct PaymentDTO {
+pub struct PaymentResponseDTO {
     pub from: String,
     pub to: String,
     pub amount: i32,
     pub created: String
 }
 
-impl PaymentDTO {
-    pub fn from_payment(payment: Payment) -> PaymentDTO {
-        PaymentDTO {
+impl PaymentResponseDTO {
+    pub fn from_payment(payment: Payment) -> PaymentResponseDTO {
+        PaymentResponseDTO {
            from: payment.from,
            to: payment.to,
            amount: payment.amount,

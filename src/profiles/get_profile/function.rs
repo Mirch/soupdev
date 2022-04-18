@@ -39,7 +39,7 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
     let result = match query.send().await {
         Ok(resp) => {
             if resp.count == 0 {
-                ()
+                // return 
             }
             let item = resp.items().unwrap().first().unwrap();
             let uid = match &item["uid"] {
@@ -67,7 +67,7 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
             }
         }
         Err(e) => {
-            println!("Error: {}", e.to_string());
+            println!("Error: {}", e);
             User::empty()
         }
     };

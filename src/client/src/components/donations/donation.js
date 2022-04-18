@@ -5,7 +5,7 @@ export function Donation(props) {
     let date = new Date(props.date).toLocaleString("en-US", dateOptions);
 
     return (
-        <div>
+        <div className="donation">
             <h6>{date}</h6>
             <h3>{from}</h3> donated <b>${amount}</b>.
         </div>
