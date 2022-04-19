@@ -88,10 +88,11 @@ pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
     };
 
     let url = session.url.unwrap();
+    let body = format!("{{\"url\": \"{url}\"}}");
+
     let response = Response::builder()
-        .status(303)
-        .header("Location", *url)
-        .body(())
+        .status(200)
+        .body(body)
         .expect("Failed to get redirect url.");
 
     Ok(response)
