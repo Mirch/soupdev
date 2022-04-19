@@ -1,16 +1,21 @@
 export const api_uri = "https://pxz4qhgbjk.execute-api.eu-west-1.amazonaws.com";
 
-export async function sendPayment({to, from, amount}) {
+export async function sendPayment({ to, from, amount }) {
     let response = await fetch(`${api_uri}/pay`, {
         method: 'POST',
-        body: {
+        redirect: 'follow',
+        body: JSON.stringify({
             "to": to,
-            "amount": amount,
+            "amount": parseInt(amount),
             "from": from
+        })
+    }).then(response => {
+        console.log(response);
+        if (response.redirected) {
+            window.location.href = response.url;
         }
-      });
-    let result = await response.json();
-    return result;
+    });
+    return response;
 }
 
 export async function getProfileAsync(username) {

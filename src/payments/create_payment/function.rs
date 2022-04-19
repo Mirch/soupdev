@@ -13,10 +13,11 @@ use uuid::Uuid;
 
 pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
 
-    let body: PaymentRequestDTO = match get_body(&event) {
+    let mut body: PaymentRequestDTO = match get_body(&event) {
         Ok(value) => value,
         Err(error) => panic!("Could not get the request body: {}", error)
     };
+    body.amount *= 100;
 
     let domain = format!("http://{}", get_env_variable(DOMAIN));
     let secret_key = "sk_test_HmtYQSWjVu1dHEb4CvXxkmBc00MEphxieW";

@@ -41,25 +41,22 @@ export function Profile() {
                 <br />
                 <p className="profile-description">{profile.description}</p>
                 <div className="payment-container">
-                    <form>
-                        <input
-                            type="text"
-                            placeholder='name'
-                            value={donor}
-                            onChange={event => setDonor(event.target.value)}
-                        />
-                        <input
-                            type="number"
-                            placeholder='5'
-                            value={donation}
-                            onChange={event => setDonation(event.target.value)}
-                        />
-                        <button
-                            type="submit"
-                            onSubmit={event => sendPayment({ to: profile.username, from: donor, amount: donation })}>
-                            Checkout
-                        </button>
-                    </form>
+                    <input
+                        type="text"
+                        placeholder='name'
+                        value={donor}
+                        onChange={event => setDonor(event.target.value)}
+                    />
+                    <input
+                        type="number"
+                        placeholder='5'
+                        value={donation}
+                        onChange={event => setDonation(event.target.value)}
+                    />
+                    <button onClick={() => sendPayment({ to: profile.username, from: donor, amount: donation })}
+                        type="submit">
+                        Donate
+                    </button>
                 </div>
                 <DonationsContainer>
                     {
