@@ -5,8 +5,8 @@ edition = "2021"
 
 # Library
 [lib]
-name = "lambda_layer"
-path = "lambda_layer/mod.rs"
+name = "common"
+path = "common/mod.rs"
 
 # Profiles
 [[bin]]

@@ -1,9 +1,9 @@
 use aws_sdk_dynamodb::model::{AttributeValue, AttributeValue::*};
 use aws_sdk_dynamodb::Client;
 use lambda_http::{Error, IntoResponse, Request, Response};
-use lambda_layer::environment::{get_env_variable, USERS_USERNAME_INDEX, USERS_TABLE_NAME};
-use lambda_layer::request_utils::get_query_string_parameter;
-use lambda_layer::user::User;
+use common::environment::{get_env_variable, USERS_USERNAME_INDEX, USERS_TABLE_NAME};
+use common::request_utils::get_query_string_parameter;
+use common::user::User;
 use serde_json::json;
 
 pub async fn func(event: Request) -> Result<impl IntoResponse, Error> {
