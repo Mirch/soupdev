@@ -1,0 +1,10 @@
+[package]
+name = "soupdev-profiles"
+version = "0.1.0"
+edition = "2021"
+
+# Profiles
+[[bin]]
+doc = false
+name = "get_profile"
+path = "./get_profile/main.rs"

@@ -8,12 +8,6 @@ edition = "2021"
 name = "common"
 path = "common/mod.rs"
 
-# Profiles
-[[bin]]
-doc = false
-name = "get_profile"
-path = "profiles/get_profile/main.rs"
-
 # Payments
 [[bin]]
 doc = false
