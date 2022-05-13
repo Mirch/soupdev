@@ -37,3 +37,23 @@ provider "stripe" {
   # NOTE: This is populated from the `TF_VAR_stripe_api_token` environment variable.
   api_token = var.stripe_api_token
 }
+
+
+# MODULES
+module "client" {
+  source = "./client"
+}
+
+module "payments" {
+  source = "./payments"
+
+  stripe_api_token = var.stripe_api_token
+  main_api = aws_apigatewayv2_api.api
+}
+
+module "profiles" {
+  source = "./profiles"
+
+  main_api = aws_apigatewayv2_api.api
+}
+
