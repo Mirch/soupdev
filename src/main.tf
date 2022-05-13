@@ -48,7 +48,7 @@ module "payments" {
   source = "./payments"
 
   stripe_api_token = var.stripe_api_token
-  main_api = aws_apigatewayv2_api.api
+  main_api         = aws_apigatewayv2_api.api
 }
 
 module "profiles" {
