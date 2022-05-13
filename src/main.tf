@@ -41,18 +41,18 @@ provider "stripe" {
 
 # MODULES
 module "client" {
-  source = "./client"
+  source = "./client/tf"
 }
 
 module "payments" {
-  source = "./payments"
+  source = "./payments/tf"
 
   stripe_api_token = var.stripe_api_token
   main_api         = aws_apigatewayv2_api.api
 }
 
 module "profiles" {
-  source = "./profiles"
+  source = "./profiles/tf"
 
   main_api = aws_apigatewayv2_api.api
 }
