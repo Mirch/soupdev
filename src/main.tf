@@ -24,7 +24,7 @@ terraform {
     organization = "mirch"
 
     workspaces {
-      name = "suppdev"
+      name = "soupdev"
     }
   }
 }

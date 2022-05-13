@@ -1,7 +1,7 @@
 # API
 resource "aws_apigatewayv2_api" "api" {
-  name          = "Suppdev API"
-  description   = "Suppdev API"
+  name          = "soupdev API"
+  description   = "soupdev API"
   protocol_type = "HTTP"
 
   cors_configuration {
@@ -19,7 +19,7 @@ resource "aws_apigatewayv2_stage" "api_stage" {
 
 resource "aws_apigatewayv2_deployment" "api_deployment" {
   api_id      = aws_apigatewayv2_api.api.id
-  description = "Suppdev API deployment"
+  description = "soupdev API deployment"
 
   triggers = {
     redeployment = sha1(join(",", [

@@ -1,9 +1,6 @@
-[package]
-name = "suppdev"
-version = "0.1.0"
-edition = "2021"
-
-# Library
-[lib]
-name = "common"
-path = "common/mod.rs"
+[workspace]
+members = [
+    "/profiles/",
+    "/payments/",
+    "/common/"
+]
