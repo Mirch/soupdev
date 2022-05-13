@@ -6,17 +6,17 @@ edition = "2021"
 [[bin]]
 doc = false
 name = "create_payment"
-path = "payments/create_payment/main.rs"
+path = "src/create_payment/main.rs"
 
 [[bin]]
 doc = false
 name = "log_payment"
-path = "payments/log_payment/main.rs"
+path = "src/log_payment/main.rs"
 
 [[bin]]
 doc = false
 name = "get_payments"
-path = "payments/get_payments/main.rs"
+path = "src/get_payments/main.rs"
 
 [dependencies]
 async-stripe = { version = "0.13.0", default-features = false, features = ["runtime-async-std-surf", "billing", "webhook-events", "checkout"] }
@@ -30,3 +30,7 @@ serde_json = "1.0.79"
 tokio = "1.17.0"
 uuid = { version = "0.8", features = ["v4"] }
 chrono = "0.4.19"
+
+[dependencies.soupdev-common]
+version = "0.1.0"
+path = "../common"

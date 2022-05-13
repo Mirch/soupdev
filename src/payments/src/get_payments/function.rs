@@ -1,6 +1,6 @@
 use aws_sdk_dynamodb::{model::AttributeValue, Client};
 use lambda_http::{Error, IntoResponse, Request};
-use common::{
+use soupdev_common::{
     environment::{get_env_variable, PAYMENTS_TABLE_NAME, TO_INDEX_NAME},
     request_utils::get_query_string_parameter, payment::{Payment, PaymentStatus, PaymentResponseDTO},
 };
