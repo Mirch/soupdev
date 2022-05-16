@@ -30,11 +30,6 @@ terraform {
 }
 
 provider "aws" {
-  alias = "main"
-}
-
-provider "archive" {
-  alias = "main"
 }
 
 # MODULES
