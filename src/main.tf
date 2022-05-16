@@ -30,14 +30,19 @@ terraform {
 }
 
 provider "aws" {
+  alias = "main"
   region = "eu-west-1"
 }
 
 provider "stripe" {
+  alias = "main"
   # NOTE: This is populated from the `TF_VAR_stripe_api_token` environment variable.
   api_token = var.stripe_api_token
 }
 
+provider "archive" {
+  alias = "main"
+}
 
 # MODULES
 module "client" {
@@ -49,11 +54,21 @@ module "payments" {
 
   stripe_api_token = var.stripe_api_token
   main_api         = aws_apigatewayv2_api.api
+
+  providers = {
+    aws = aws.main
+    archive = archive.main
+  }
 }
 
 module "profiles" {
   source = "./profiles/tf"
 
   main_api = aws_apigatewayv2_api.api
+
+  providers = {
+    aws = aws.main
+    archive = archive.main
+  }
 }
 
