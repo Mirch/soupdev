@@ -1,8 +1,9 @@
 lint:
-    rustup component add clippy
-    cargo clippy
     terraform fmt -check
     terraform validate
+    
+    rustup component add clippy
+    cargo clippy
     
     cd ./client && npm install --save-dev eslint-config-react-app eslint@^8.0.0
     cd ./client && npx eslint . --ext .js,.jsx,.ts,.tsx

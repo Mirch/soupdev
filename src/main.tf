@@ -47,6 +47,10 @@ provider "archive" {
 # MODULES
 module "client" {
   source = "./client/tf"
+
+  providers = {
+    aws = aws.main
+  }
 }
 
 module "payments" {
