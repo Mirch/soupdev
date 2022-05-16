@@ -23,10 +23,10 @@ resource "aws_apigatewayv2_deployment" "api_deployment" {
 
   triggers = {
     redeployment = sha1(join(",", [
-      jsonencode(aws_apigatewayv2_integration.get_profile_integration),
-      jsonencode(aws_apigatewayv2_route.get_profile_route),
-      jsonencode(aws_apigatewayv2_integration.create_payment_integration),
-      jsonencode(aws_apigatewayv2_route.create_payment_route),
+      jsonencode(module.profiles.aws_apigatewayv2_integration.get_profile_integration),
+      jsonencode(module.profiles.aws_apigatewayv2_route.get_profile_route),
+      jsonencode(module.payments.aws_apigatewayv2_integration.create_payment_integration),
+      jsonencode(module.payments.aws_apigatewayv2_route.create_payment_route),
       ],
     ))
   }
