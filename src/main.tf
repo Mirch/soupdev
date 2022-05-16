@@ -31,7 +31,6 @@ terraform {
 
 provider "aws" {
   alias  = "main"
-  region = "eu-west-1"
 }
 
 provider "stripe" {
@@ -64,6 +63,7 @@ module "payments" {
   providers = {
     aws     = aws.main
     archive = archive.main
+    stripe = stripe.main
   }
 }
 
