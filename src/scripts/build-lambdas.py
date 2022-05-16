@@ -21,7 +21,7 @@ commands.clear()
 
 commands.append("echo [BUILD] Starting Rust functions building process...")
 commands.append("mkdir bin")
-function_folders = [name for name in os.listdir(project_folder)]
+function_folders = [name for name in os.listdir(f"{project_folder}/src")]
 for function_folder in function_folders:
     commands.append(f"echo [BUILD] Creating {function_folder} output file...")
     
