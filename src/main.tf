@@ -30,7 +30,7 @@ terraform {
 }
 
 provider "aws" {
-  alias = "main"
+  alias  = "main"
   region = "eu-west-1"
 }
 
@@ -56,7 +56,7 @@ module "payments" {
   main_api         = aws_apigatewayv2_api.api
 
   providers = {
-    aws = aws.main
+    aws     = aws.main
     archive = archive.main
   }
 }
@@ -67,7 +67,7 @@ module "profiles" {
   main_api = aws_apigatewayv2_api.api
 
   providers = {
-    aws = aws.main
+    aws     = aws.main
     archive = archive.main
   }
 }
