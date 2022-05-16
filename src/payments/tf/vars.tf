@@ -1,9 +1,20 @@
 # API Gateway
 variable "main_api" {
     description = "The representation of the root API."
-
     type = any
 }
+
+variable "main_api_stage" {
+    description = "The representation of the root API stage."
+    type = any
+}
+
+# Client S3 configuration
+variable "client_domain" {
+   description = "The domain used by the client."
+  type = string
+}
+
 
 # Stripe
 variable "stripe_api_token" {

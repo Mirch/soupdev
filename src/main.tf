@@ -54,6 +54,8 @@ module "payments" {
 
   stripe_api_token = var.stripe_api_token
   main_api         = aws_apigatewayv2_api.api
+  main_api_stage   = aws_apigatewayv2_stage.api_stage
+  client_domain    = module.client.domain
 
   providers = {
     aws     = aws.main

@@ -13,7 +13,7 @@ resource "aws_lambda_function" "create_payment_lambda" {
   environment {
     variables = {
       PAYMENTS_TABLE_NAME = aws_dynamodb_table.payments.name
-      DOMAIN              = aws_s3_bucket_website_configuration.soupdev-client.website_endpoint
+      DOMAIN              = var.client_domain
     }
   }
 }
