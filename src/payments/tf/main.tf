@@ -8,6 +8,7 @@ terraform {
     }
     stripe = {
       source  = "franckverrot/stripe"
+      version = "1.8.0"
     }
   }
 }
