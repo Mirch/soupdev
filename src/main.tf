@@ -41,8 +41,6 @@ module "payments" {
   main_api         = aws_apigatewayv2_api.api
   main_api_stage   = aws_apigatewayv2_stage.api_stage
   client_domain    = module.client.domain
-
-  wait_for_write = module.client.domain
 }
 
 module "profiles" {
