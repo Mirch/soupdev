@@ -20,7 +20,7 @@ terraform {
     organization = "mirch"
 
     workspaces {
-      name = "soupdev"
+      name = "soupdev-aws"
     }
   }
 }
