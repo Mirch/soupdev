@@ -42,10 +42,7 @@ module "payments" {
   main_api_stage   = aws_apigatewayv2_stage.api_stage
   client_domain    = module.client.domain
 
-  depends_on = [
-    module.client,
-    module.profiles
-  ]
+  wait_for_write = module.client.domain
 }
 
 module "profiles" {
