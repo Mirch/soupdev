@@ -1,20 +1,24 @@
-variable "aws_region" {
-  description = "AWS region for all resources."
-
-  type    = string
-  default = "eu-west-1"
+# API Gateway
+variable "main_api" {
+    description = "The representation of the root API."
+    type = any
 }
 
-variable "stripe_api_token" {
+variable "main_api_stage" {
+    description = "The representation of the root API stage."
+    type = any
+}
+
+# Client S3 configuration
+variable "client_domain" {
+   description = "The domain used by the client."
   type = string
 }
 
-# Profile
-variable "get_profile_bin_path" {
-  description = "The binary path for the GetProfile lambda."
 
-  type    = string
-  default = "./bin/get_profile/bootstrap"
+# Stripe
+variable "stripe_api_token" {
+  type = string
 }
 
 # Payments

@@ -61,7 +61,7 @@ jobs:
       run: |
         sudo apt-get install jq
         # CLIENT_BUCKET=$(echo ${{ steps.apply.outputs }} | jq -r '.client_bucket')
-        CLIENT_BUCKET=suppdev-client
+        CLIENT_BUCKET=soupdev-client
         just deploy-client $CLIENT_BUCKET
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}

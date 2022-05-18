@@ -3,7 +3,7 @@ use std::str::FromStr;
 use aws_sdk_dynamodb::{model::AttributeValue, Client};
 use chrono::Utc;
 use lambda_http::{Error, IntoResponse, Request, Response};
-use lambda_layer::{
+use soupdev_common::{
     environment::{get_env_variable, DOMAIN, PAYMENTS_TABLE_NAME},
     payment::{PaymentStatus, PaymentRequestDTO},
     request_utils::{get_body},
