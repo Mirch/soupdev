@@ -1,4 +1,4 @@
-export const api_uri = "https://pxz4qhgbjk.execute-api.eu-west-1.amazonaws.com";
+export const api_uri = "https://j75nfktg36.execute-api.eu-west-1.amazonaws.com";
 
 export async function sendPayment({ to, from, amount }) {
     let response = await fetch(`${api_uri}/pay`, {
