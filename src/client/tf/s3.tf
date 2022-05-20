@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "soupdev-client" {
-  bucket = "soupdev-client"
+  bucket = "soupdev-web-client"
 }
 
 resource "aws_s3_bucket_website_configuration" "soupdev-client" {

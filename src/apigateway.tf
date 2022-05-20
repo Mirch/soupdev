@@ -17,6 +17,11 @@ resource "aws_apigatewayv2_stage" "api_stage" {
   auto_deploy = true
 }
 
+resource "aws_apigatewayv2_route" "sample_route" {
+  api_id    = var.main_api.id
+  route_key = "GET /"
+}
+
 resource "aws_apigatewayv2_deployment" "api_deployment" {
   api_id      = aws_apigatewayv2_api.api.id
   description = "soupdev API deployment"
