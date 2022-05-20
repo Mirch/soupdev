@@ -18,7 +18,7 @@ resource "aws_apigatewayv2_stage" "api_stage" {
 }
 
 resource "aws_apigatewayv2_route" "sample_route" {
-  api_id    = var.main_api.id
+  api_id    = aws_apigatewayv2_api.api.id
   route_key = "GET /"
 }
 
