@@ -1,5 +1,5 @@
 resource "aws_cloudfront_origin_access_identity" "oai" {
-  comment = "Some comment"
+  comment = "OAI for the soup.dev distribution"
 }
 
 resource "aws_cloudfront_distribution" "soupdev_cf_distribution" {
