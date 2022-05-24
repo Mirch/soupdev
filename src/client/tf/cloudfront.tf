@@ -1,10 +1,14 @@
+resource "aws_cloudfront_origin_access_identity" "oai" {
+  comment = "OAI for the soup.dev distribution"
+}
+
 resource "aws_cloudfront_distribution" "soupdev_cf_distribution" {
   origin {
     domain_name = aws_s3_bucket.soupdev-client.bucket_regional_domain_name
     origin_id   = "soupdev-web-client-s3-origin"
 
     s3_origin_config {
-      origin_access_identity = "origin-access-identity/cloudfront/ABCDEFG1234567"
+      origin_access_identity = "origin-access-identity/cloudfront/${aws_cloudfront_origin_access_identity.oai.id}"
     }
   }
 
