@@ -29,5 +29,5 @@ resource "aws_route53_record" "root_domain" {
 
 resource "aws_acm_certificate_validation" "soupdev" {
   certificate_arn         = aws_acm_certificate.soupdev.arn
-  validation_record_fqdns = [for record in aws_route53_record.soupdev : record.fqdn]
+  validation_record_fqdns = [for record in aws_route53_record.root_domain : record.fqdn]
 }
