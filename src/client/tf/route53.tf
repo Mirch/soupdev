@@ -1,6 +1,10 @@
 data "aws_acm_certificate" "soupdev" {
-  domain_name       = "soup.dev"
-  validation_method = "DNS"
+  domain       = "soup.dev"
+
+  filter {
+    name   = "tag:domain"
+    values = ["soup.dev"]
+  }
 }
 
 resource "aws_route53_zone" "soupdev" {
