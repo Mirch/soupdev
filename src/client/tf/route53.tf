@@ -19,6 +19,7 @@ resource "aws_route53_record" "root_domain" {
   name            = each.value.name
   records         = [each.value.record]
   type            = each.value.type
+  zone_id         = aws_route53_zone.soupdev.zone_id
 
   alias {
     name                   = aws_cloudfront_distribution.soupdev_cf_distribution.domain_name
