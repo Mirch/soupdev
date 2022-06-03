@@ -18,9 +18,7 @@ resource "aws_route53_record" "root_domain" {
   allow_overwrite = true
   name            = each.value.name
   records         = [each.value.record]
-  ttl             = 60
   type            = each.value.type
-  zone_id         = aws_route53_zone.soupdev.zone_id
 
   alias {
     name                   = aws_cloudfront_distribution.soupdev_cf_distribution.domain_name
