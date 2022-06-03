@@ -1,5 +1,5 @@
 resource "aws_acm_certificate" "soupdev_cert" {
-  domain       = "soup.dev"
+  domain = "soup.dev"
 }
 
 resource "aws_route53_zone" "soupdev" {
@@ -14,14 +14,17 @@ resource "aws_route53_record" "root_domain" {
       type   = dvo.resource_record_type
     }
   }
-  
-  zone_id = aws_route53_zone.soupdev.zone_id
-  name = "soup.dev"
-  type = "A"
+
+  allow_overwrite = true
+  name            = each.value.name
+  records         = [each.value.record]
+  ttl             = 60
+  type            = each.value.type
+  zone_id         = aws_route53_zone.soupdev.zone_id
 
   alias {
-    name = aws_cloudfront_distribution.soupdev_cf_distribution.domain_name
-    zone_id = aws_cloudfront_distribution.soupdev_cf_distribution.hosted_zone_id
+    name                   = aws_cloudfront_distribution.soupdev_cf_distribution.domain_name
+    zone_id                = aws_cloudfront_distribution.soupdev_cf_distribution.hosted_zone_id
     evaluate_target_health = false
   }
 }
