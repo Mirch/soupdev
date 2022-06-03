@@ -1,5 +1,5 @@
 resource "aws_acm_certificate" "soupdev_cert" {
-  domain = "soup.dev"
+  domain_name = "soup.dev"
 }
 
 resource "aws_route53_zone" "soupdev" {
