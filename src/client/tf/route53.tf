@@ -1,5 +1,10 @@
 resource "aws_acm_certificate" "soupdev_cert" {
-  domain_name = "soup.dev"
+  domain_name       = "soup.dev"
+  validation_method = "DNS"
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_route53_zone" "soupdev" {
@@ -9,17 +14,15 @@ resource "aws_route53_zone" "soupdev" {
 resource "aws_route53_record" "root_domain" {
   for_each = {
     for dvo in aws_acm_certificate.soupdev_cert.domain_validation_options : dvo.domain_name => {
-      name   = dvo.resource_record_name
-      record = dvo.resource_record_value
+      name   = replace(dvo.resource_record_name, "/\\.$/", "")
+      record = replace(dvo.resource_record_value, "/\\.$/", "")
       type   = dvo.resource_record_type
     }
   }
-
-  allow_overwrite = true
-  name            = each.value.name
-  records         = [each.value.record]
-  type            = each.value.type
-  zone_id         = aws_route53_zone.soupdev.zone_id
+  name    = each.value.name
+  type    = each.value.type
+  zone_id = aws_route53_zone.soupdev.zone_id
+  records = [each.value.record]
 
   alias {
     name                   = aws_cloudfront_distribution.soupdev_cf_distribution.domain_name
