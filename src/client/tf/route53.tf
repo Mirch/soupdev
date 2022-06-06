@@ -1,10 +1,6 @@
-resource "aws_acm_certificate" "soupdev_cert" {
+resource "aws_acm_certificate" "soupdev" {
   domain_name       = "soup.dev"
   validation_method = "DNS"
-
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 
 resource "aws_route53_zone" "soupdev" {
@@ -13,7 +9,7 @@ resource "aws_route53_zone" "soupdev" {
 
 resource "aws_route53_record" "root_domain" {
   for_each = {
-    for dvo in aws_acm_certificate.soupdev_cert.domain_validation_options : dvo.domain_name => {
+    for dvo in aws_acm_certificate.soupdev.domain_validation_options : dvo.domain_name => {
       name   = replace(dvo.resource_record_name, "/\\.$/", "")
       record = replace(dvo.resource_record_value, "/\\.$/", "")
       type   = dvo.resource_record_type
@@ -32,6 +28,6 @@ resource "aws_route53_record" "root_domain" {
 }
 
 resource "aws_acm_certificate_validation" "soupdev" {
-  certificate_arn         = aws_acm_certificate.soupdev_cert.arn
+  certificate_arn         = aws_acm_certificate.soupdev.arn
   validation_record_fqdns = [for record in aws_route53_record.root_domain : record.fqdn]
 }
